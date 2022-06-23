@@ -1,21 +1,22 @@
 {
-  "name": "typescript-template",
+  "name": "kraken-bot",
   "version": "0.1.0",
-  "description": "My TypeScript starter template",
+  "description": "A Discord bot for Squid's server",
   "private": true,
   "author": "spuggle",
   "license": "Apache-2.0",
-  "homepage": "https://github.com/spuggle/typescript-template#readme",
+  "homepage": "https://github.com/spuggle/kraken-bot#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/spuggle/typescript-template.git"
+    "url": "git+https://github.com/spuggle/kraken-bot.git"
   },
   "keywords": [
-    "typescript",
-    "template"
+    "discord",
+    "chatbot",
+    "discord.js"
   ],
   "bugs": {
-    "url": "https://github.com/spuggle/typescript-template/issues"
+    "url": "https://github.com/spuggle/kraken-bot/issues"
   },
   "main": "dist/index.js",
   "scripts": {
