@@ -1,0 +1,62 @@
+import EventEmitter from "node:events";
+import { readdir } from "node:fs/promises";
+import path from "node:path";
+
+import { Collection } from "discord.js";
+
+import type { KrakenBot } from "../structures/KrakenBot.js";
+
+type ListenerNames = "client" | "commands" | "contexts" | "modals";
+
+export abstract class BaseHandler<ListenerStructure> {
+  #handlingListenerName: ListenerNames;
+  #listenerDirectory: string;
+  readonly bot: KrakenBot;
+  readonly emitter: EventEmitter;
+  readonly listeners = new Collection<string, ListenerStructure>();
+
+  constructor(bot: KrakenBot, listenerToHandle: ListenerNames, useEventEmitter?: EventEmitter) {
+    this.#handlingListenerName = listenerToHandle;
+    this.#listenerDirectory = path.join(process.cwd(), "dist/listeners/", this.#handlingListenerName);
+    this.bot = bot;
+    this.emitter = useEventEmitter ?? new EventEmitter();
+  }
+
+  async fetchListenerFilenames(): Promise<string[]> {
+    const directoryContents = await readdir(this.#listenerDirectory);
+    const directoryFiles = directoryContents
+      .filter(directoryContent => directoryContent.endsWith(".js"));
+
+    return directoryFiles;
+  }
+
+  async loadListeners(): Promise<BaseHandler<ListenerStructure>["listeners"]> {
+    const listenerFilenames = await this.fetchListenerFilenames();
+
+    for await (const listenerFilename of listenerFilenames) {
+      const listenerName = listenerFilename.split(".")[0]!;
+      const listenerPath = path.join(this.#listenerDirectory, listenerFilename);
+
+      // eslint-disable-next-line quote-props
+      const { default: listenerData } = await import(listenerPath) as { default: ListenerStructure; };
+      if (this.listeners.has(listenerName)) this.unloadListener(listenerName);
+
+      this.listeners.set(listenerName, listenerData);
+    }
+
+    return this.listeners;
+  }
+
+  async loadAndRegisterListeners(): Promise<void> {
+    await this.loadListeners();
+    await this.registerListeners();
+  }
+
+  unloadListener(listenerName: string): boolean {
+    this.emitter.removeAllListeners(listenerName);
+
+    return this.listeners.delete(listenerName);
+  }
+
+  abstract registerListeners(): Promise<void> | void;
+}
