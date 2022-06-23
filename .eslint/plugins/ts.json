@@ -130,7 +130,7 @@
         "allowDirectConstAssertionInArrowFunctions": false,
         "allowConciseArrowFunctionExpressionsStartingWithVoid": false
       }],
-      "@typescript-eslint/explicit-member-accessibility": [ "error", {
+      "@typescript-eslint/explicit-member-accessibility": [ "off", {
         "accessibility": "explicit",
         "overrides": {
           "accessors": "explicit",
@@ -368,7 +368,7 @@
         "allowDefinitionFiles": true
       }],
       "@typescript-eslint/no-non-null-asserted-optional-chain": "error",
-      "@typescript-eslint/no-non-null-assertion": "error",
+      "@typescript-eslint/no-non-null-assertion": "off",
       "@typescript-eslint/no-parameter-properties": "error",
       "@typescript-eslint/no-redeclare": [ "error", {
         "builtinGlobals": true,
@@ -392,7 +392,7 @@
         "allowThrowingUnknown": false
       }],
       "@typescript-eslint/no-type-alias": [ "error", {
-        "allowAliases": "never",
+        "allowAliases": "always",
         "allowCallbacks": "never",
         "allowConditionalTypes": "never",
         "allowConstructors": "never",

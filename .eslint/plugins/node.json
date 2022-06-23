@@ -22,7 +22,10 @@
       "node/exports-style": [ "error", "module.exports", {
         "allowBatchAssign": false
       }],
-      "node/file-extension-in-import": [ "error", "never" ],
+      "node/file-extension-in-import": [ "off", "always", {
+        "tryExtensions": [ ".js", ".json", ".node" ],
+        ".ts": "never"
+      }],
       "node/global-require": "error",
       "node/handle-callback-err": [ "error", "error" ],
       "node/no-callback-literal": "error",

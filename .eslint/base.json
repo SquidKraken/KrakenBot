@@ -611,7 +611,7 @@
       "prev": [ "singleline-const", "singleline-let", "singleline-var" ],
       "next": [ "if", "expression" ]
     }, {
-      "blankLine": "always",
+      "blankLine": "never",
       "prev": [ "singleline-const", "singleline-let", "singleline-var" ],
       "next": [ "multiline-const", "multiline-let", "multiline-var" ]
     }, {
@@ -677,7 +677,7 @@
     }],
     "semi-style": [ "error", "last" ],
     "sort-imports": "off",
-    "sort-keys": [ "error", "asc", {
+    "sort-keys": [ "off", "asc", {
       "caseSensitive": true,
       "natural": true,
       "minKeys": 2
