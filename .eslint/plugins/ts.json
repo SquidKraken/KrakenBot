@@ -261,7 +261,7 @@
           "method"
         ]
       }],
-      "@typescript-eslint/method-signature-style": [ "error", "property" ],
+      "@typescript-eslint/method-signature-style": [ "error", "method" ],
       "@typescript-eslint/naming-convention": [ "error", {
         "selector": "default",
         "format": [ "camelCase" ],
@@ -391,7 +391,7 @@
         "allowThrowingAny": false,
         "allowThrowingUnknown": false
       }],
-      "@typescript-eslint/no-type-alias": [ "error", {
+      "@typescript-eslint/no-type-alias": [ "off", {
         "allowAliases": "always",
         "allowCallbacks": "never",
         "allowConditionalTypes": "never",

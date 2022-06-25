@@ -58,13 +58,13 @@
       "ignoreGlobals": false,
       "allow": []
     }],
-    "capitalized-comments": [ "error", "always", {
+    "capitalized-comments": [ "off", "always", {
       "ignoreConsecutiveComments": false,
       "ignoreInlineComments": false,
       "ignorePattern": "^$"
     }],
     "class-methods-use-this": [ "error", {
-      "exceptMethods": []
+      "exceptMethods": [ "run" ]
     }],
     "comma-dangle": [ "error", {
       "arrays": "never",
