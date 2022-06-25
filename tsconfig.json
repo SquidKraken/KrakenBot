@@ -17,7 +17,7 @@
     "noEmit": false,
     "noEmitHelpers": false,
     "noEmitOnError": true,
-    "sourceMap": false,
+    "sourceMap": true,
 
     "downlevelIteration": true,
     "esModuleInterop": true,
