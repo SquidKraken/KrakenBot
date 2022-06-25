@@ -1,5 +1,5 @@
 import type { ClientEvents } from "discord.js";
-import type { KrakenBot } from "../structures/KrakenBot.jsx";
+import type { KrakenBot } from "./KrakenBot.js";
 
 export interface ClientListenerStructure<ListenerName extends keyof ClientEvents> {
   readonly name: ListenerName;

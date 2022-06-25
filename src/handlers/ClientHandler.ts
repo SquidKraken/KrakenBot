@@ -1,6 +1,6 @@
 import type { Client, ClientEvents } from "discord.js";
 import type { KrakenBot } from "../structures/KrakenBot.js";
-import type { ClientListenerStructure } from "../typedefs/ClientListener.js";
+import type { ClientListenerStructure } from "../structures/ClientListener.js";
 import { BaseHandler } from "./BaseHandler.js";
 
 export class ClientHandler extends BaseHandler<ClientListenerStructure<keyof ClientEvents>> {

@@ -1,5 +1,5 @@
 import type { Interaction } from "discord.js";
-import type { ClientListenerStructure } from "../../typedefs/ClientListener";
+import type { ClientListenerStructure } from "../../structures/ClientListener";
 
 import type { KrakenBot } from "../../structures/KrakenBot.js";
 

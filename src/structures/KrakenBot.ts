@@ -1,6 +1,6 @@
 import { REST } from "@discordjs/rest";
 import { Client, Intents } from "discord.js";
-import { ClientHandler } from "../handlers/ClientHandlers.js";
+import { ClientHandler } from "../handlers/ClientHandler.js";
 import { CommandHandler } from "../handlers/CommandHandler.js";
 
 const BOT_CONFIG = {
