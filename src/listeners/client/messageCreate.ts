@@ -1,5 +1,5 @@
 import type { Message } from "discord.js";
-import type { ClientListenerStructure } from "../../typedefs/ClientListenerStructure";
+import type { ClientListenerStructure } from "../../typedefs/ClientListener";
 
 import type { KrakenBot } from "../../structures/KrakenBot.js";
 

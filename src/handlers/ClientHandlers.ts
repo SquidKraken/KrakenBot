@@ -1,6 +1,6 @@
 import type { Client, ClientEvents } from "discord.js";
 import type { KrakenBot } from "../structures/KrakenBot.js";
-import type { ClientListenerStructure } from "../typedefs/ClientListenerStructure.js";
+import type { ClientListenerStructure } from "../typedefs/ClientListener.js";
 import { BaseHandler } from "./BaseHandler.js";
 
 export class ClientHandler extends BaseHandler<ClientListenerStructure<keyof ClientEvents>> {
@@ -12,7 +12,7 @@ export class ClientHandler extends BaseHandler<ClientListenerStructure<keyof Cli
     // eslint-disable-next-line curly
     for (const [ eventName, eventListener ] of this.listeners.entries()) {
       // @ts-expect-error EventEmitter callback is registered properly
-      if (eventListener.runOnce) (this.emitter as Client).once(eventName, eventListener.run);
+      if (eventListener.runOnce) (this.emitter as Client).once(eventName, eventListener.run.bind(eventListener));
 
       // @ts-expect-error EventEmitter callback is registered properly
       else this.emitter.on(eventName, eventListener.run.bind(eventListener, this.bot));

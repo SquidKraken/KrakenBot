@@ -1,8 +1,7 @@
-import { SlashCommandBuilder } from "@discordjs/builders";
 import { Routes } from "discord-api-types/v9";
 
 import type { KrakenBot } from "../structures/KrakenBot.js";
-import type { SlashCommandStructure } from "../typedefs/SlashCommandStructure.js";
+import type { SlashCommandStructure } from "../structures/SlashCommand.js";
 import { BaseHandler } from "./BaseHandler.js";
 
 export class CommandHandler extends BaseHandler<SlashCommandStructure> {
@@ -15,14 +14,9 @@ export class CommandHandler extends BaseHandler<SlashCommandStructure> {
     const commands = [];
 
     for (const [ commandName, commandData ] of this.listeners.entries()) {
-      const slashCommand = new SlashCommandBuilder()
-        .setName(commandData.name)
-        .setDescription(commandData.description)
-        .setDMPermission(commandData.allowInDMs);
+      commands.push(commandData);
 
-      commands.push(slashCommand.toJSON());
-
-      this.emitter.on(commandName, commandData.run);
+      this.emitter.on(commandName, (...listenerArguments: Parameters<SlashCommandStructure["run"]>) => commandData.run(...listenerArguments));
     }
 
     await this.bot.handlers.rest.put(Routes.applicationCommands(this.bot.applicationID), { body: commands });

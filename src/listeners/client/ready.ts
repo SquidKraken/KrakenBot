@@ -1,4 +1,4 @@
-import type { ClientListenerStructure } from "../../typedefs/ClientListenerStructure.js";
+import type { ClientListenerStructure } from "../../typedefs/ClientListener.js";
 
 const interactionCreate: ClientListenerStructure<"ready"> = {
   name: "ready",
