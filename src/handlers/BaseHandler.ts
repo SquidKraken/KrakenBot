@@ -5,10 +5,9 @@ import path from "node:path";
 import type { KrakenBot } from "../structures/KrakenBot.js";
 import type { ClientListenerStructure } from "../structures/ClientListener.js";
 import type { SlashCommandStructure } from "../structures/SlashCommand.js";
-import type { ClientEvents } from "discord.js";
 
 interface ListenerStructures {
-  client: ClientListenerStructure<keyof ClientEvents>;
+  client: ClientListenerStructure;
   commands: SlashCommandStructure;
 }
 
