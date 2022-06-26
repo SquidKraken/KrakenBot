@@ -3,11 +3,13 @@ import { readdir } from "node:fs/promises";
 import path from "node:path";
 
 import type { KrakenBot } from "../structures/KrakenBot.js";
+import type { ButtonStructure } from "../structures/ButtonStructure.js";
 import type { ClientListenerStructure } from "../structures/ClientListener.js";
 import type { SlashCommandStructure } from "../structures/SlashCommand.js";
 import type { ModalStructure } from "../structures/ModalStructure.js";
 
 interface ListenerStructures {
+  buttons: ButtonStructure;
   client: ClientListenerStructure;
   commands: SlashCommandStructure;
   modals: ModalStructure;

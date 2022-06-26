@@ -1,5 +1,6 @@
 import { REST } from "@discordjs/rest";
 import { Client, Intents } from "discord.js";
+import { ButtonHandler } from "../handlers/ButtonHandler.js";
 import { ClientHandler } from "../handlers/ClientHandler.js";
 import { CommandHandler } from "../handlers/CommandHandler.js";
 import { ModalHandler } from "../handlers/ModalHandler.js";
@@ -31,12 +32,14 @@ export class KrakenBot {
 }
 
 class BotHandlers {
+  readonly button: ButtonHandler;
   readonly client: ClientHandler;
   readonly command: CommandHandler;
   readonly modal: ModalHandler;
   readonly rest: REST;
 
   constructor(bot: KrakenBot, botToken: string) {
+    this.button = new ButtonHandler(bot);
     this.client = new ClientHandler(bot);
     this.command = new CommandHandler(bot);
     this.modal = new ModalHandler(bot);
@@ -44,6 +47,7 @@ class BotHandlers {
   }
 
   async loadAndRegisterAll(): Promise<void> {
+    await this.button.loadAndRegisterListeners();
     await this.client.loadAndRegisterListeners();
     await this.command.loadAndRegisterListeners();
     await this.modal.loadAndRegisterListeners();

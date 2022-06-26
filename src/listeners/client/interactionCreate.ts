@@ -4,7 +4,10 @@ const interactionCreate: ClientListenerStructure<"interactionCreate"> = {
   name: "interactionCreate",
   runOnce: false,
   run(bot, interaction) {
-    if (interaction.isCommand()) {
+    if (interaction.isButton()) {
+      const { customId } = interaction;
+      bot.handlers.button.emitter.emit(customId, bot, interaction);
+    } else if (interaction.isCommand()) {
       const { commandName } = interaction;
       bot.handlers.command.emitter.emit(commandName, bot, interaction);
     } else if (interaction.isModalSubmit()) {
