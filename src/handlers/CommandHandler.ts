@@ -4,7 +4,7 @@ import type { KrakenBot } from "../structures/KrakenBot.js";
 import type { SlashCommandStructure } from "../structures/SlashCommand.js";
 import { BaseHandler } from "./BaseHandler.js";
 
-export class CommandHandler extends BaseHandler<SlashCommandStructure> {
+export class CommandHandler extends BaseHandler<"commands"> {
   constructor(bot: KrakenBot) {
     super(bot, "commands");
   }

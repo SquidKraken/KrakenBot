@@ -2,24 +2,30 @@ import EventEmitter from "node:events";
 import { readdir } from "node:fs/promises";
 import path from "node:path";
 
-import { Collection } from "discord.js";
-
 import type { KrakenBot } from "../structures/KrakenBot.js";
+import type { ClientListenerStructure } from "../structures/ClientListener.js";
+import type { SlashCommandStructure } from "../structures/SlashCommand.js";
+import type { ClientEvents } from "discord.js";
 
-type ListenerNames = "client" | "commands" | "contexts" | "modals";
+interface ListenerStructures {
+  client: ClientListenerStructure<keyof ClientEvents>;
+  commands: SlashCommandStructure;
+}
 
-export abstract class BaseHandler<ListenerStructure> {
-  #handlingListenerName: ListenerNames;
+type ListenerNames = keyof ListenerStructures;
+
+export abstract class BaseHandler<ListenerName extends ListenerNames> {
+  #listenerName: ListenerName;
   #listenerDirectory: string;
   readonly bot: KrakenBot;
   readonly emitter: EventEmitter;
-  readonly listeners = new Collection<string, ListenerStructure>();
+  readonly listeners = new Map<string, ListenerStructures[ListenerName]>();
 
-  constructor(bot: KrakenBot, listenerToHandle: ListenerNames, useEventEmitter?: EventEmitter) {
-    this.#handlingListenerName = listenerToHandle;
-    this.#listenerDirectory = path.join(process.cwd(), "dist/listeners/", this.#handlingListenerName);
+  constructor(bot: KrakenBot, listenerToHandle: ListenerName) {
+    this.#listenerName = listenerToHandle;
+    this.#listenerDirectory = path.join(process.cwd(), "dist/listeners/", this.#listenerName);
     this.bot = bot;
-    this.emitter = useEventEmitter ?? new EventEmitter();
+    this.emitter = new EventEmitter();
   }
 
   async fetchListenerFilenames(): Promise<string[]> {
@@ -30,7 +36,7 @@ export abstract class BaseHandler<ListenerStructure> {
     return directoryFiles;
   }
 
-  async loadListeners(): Promise<BaseHandler<ListenerStructure>["listeners"]> {
+  async loadListeners(): Promise<BaseHandler<ListenerName>["listeners"]> {
     const listenerFilenames = await this.fetchListenerFilenames();
 
     for await (const listenerFilename of listenerFilenames) {
@@ -38,7 +44,7 @@ export abstract class BaseHandler<ListenerStructure> {
       const listenerPath = path.join(this.#listenerDirectory, listenerFilename);
 
       // eslint-disable-next-line quote-props
-      const { default: listenerData } = await import(listenerPath) as { default: ListenerStructure; };
+      const { default: listenerData } = await import(listenerPath) as { default: ListenerStructures[ListenerName]; };
       if (this.listeners.has(listenerName)) this.unloadListener(listenerName);
 
       this.listeners.set(listenerName, listenerData);
