@@ -2,6 +2,7 @@ import { REST } from "@discordjs/rest";
 import { Client, Intents } from "discord.js";
 import { ClientHandler } from "../handlers/ClientHandler.js";
 import { CommandHandler } from "../handlers/CommandHandler.js";
+import { ModalHandler } from "../handlers/ModalHandler.js";
 
 const BOT_CONFIG = {
   intents: [
@@ -32,16 +33,19 @@ export class KrakenBot {
 class BotHandlers {
   readonly client: ClientHandler;
   readonly command: CommandHandler;
+  readonly modal: ModalHandler;
   readonly rest: REST;
 
   constructor(bot: KrakenBot, botToken: string) {
     this.client = new ClientHandler(bot);
     this.command = new CommandHandler(bot);
+    this.modal = new ModalHandler(bot);
     this.rest = new REST({ version: "9" }).setToken(botToken);
   }
 
   async loadAndRegisterAll(): Promise<void> {
     await this.client.loadAndRegisterListeners();
     await this.command.loadAndRegisterListeners();
+    await this.modal.loadAndRegisterListeners();
   }
 }

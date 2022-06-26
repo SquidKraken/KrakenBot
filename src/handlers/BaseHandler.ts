@@ -5,10 +5,12 @@ import path from "node:path";
 import type { KrakenBot } from "../structures/KrakenBot.js";
 import type { ClientListenerStructure } from "../structures/ClientListener.js";
 import type { SlashCommandStructure } from "../structures/SlashCommand.js";
+import type { ModalStructure } from "../structures/ModalStructure.js";
 
 interface ListenerStructures {
   client: ClientListenerStructure;
   commands: SlashCommandStructure;
+  modals: ModalStructure;
 }
 
 type ListenerNames = keyof ListenerStructures;
