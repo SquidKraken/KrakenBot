@@ -92,6 +92,7 @@ export interface SlashCommandStructure<TypeofOptions extends readonly CommandOpt
   readonly name: string;
   readonly description: string;
   readonly allowInDMs: boolean;
+  readonly guildPermissions: bigint;
   run(
     client: KrakenBot,
     interaction: ContexedCommandInteraction<TypeofOptions>
@@ -104,6 +105,8 @@ export interface TransformedSlashCommandStructure<TypeofOptions extends readonly
   readonly description: string;
   // eslint-disable-next-line @typescript-eslint/naming-convention
   readonly dm_permissions: boolean;
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  readonly default_member_permissions: string;
   run(
     client: KrakenBot,
     interaction: ContexedCommandInteraction<TypeofOptions>
@@ -119,8 +122,13 @@ export function createSlashCommand<TypeofOptions extends readonly CommandOption[
     description: commandStructure.description,
     // eslint-disable-next-line @typescript-eslint/naming-convention, camelcase
     dm_permissions: commandStructure.allowInDMs,
+    // eslint-disable-next-line @typescript-eslint/naming-convention, camelcase
+    default_member_permissions: commandStructure.guildPermissions.toString(),
     run: commandStructure.run.bind(commandStructure)
   };
 }
 
-export { ApplicationCommandOptionType as CommandOptionType } from "discord-api-types/v9";
+export {
+  ApplicationCommandOptionType as CommandOptionType,
+  PermissionFlagsBits as PermissionFlags
+} from "discord-api-types/v9";

@@ -1,9 +1,10 @@
-import { createSlashCommand } from "../../structures/SlashCommand.js";
+import { createSlashCommand, PermissionFlags } from "../../structures/SlashCommand.js";
 
 const pingCommand = createSlashCommand({
   name: "ping",
   description: "Replies with 'Pong!'",
   allowInDMs: true,
+  guildPermissions: PermissionFlags.SendMessages,
   options: [],
   async run(_client, interaction): Promise<void> {
     await interaction.reply("Pong!");

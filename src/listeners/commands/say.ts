@@ -1,10 +1,11 @@
-import { CommandOptionType, createSlashCommand } from "../../structures/SlashCommand.js";
+import { CommandOptionType, createSlashCommand, PermissionFlags } from "../../structures/SlashCommand.js";
 import { isNullish } from "../../utilities/nullishAssertion.js";
 
 const sayCommand = createSlashCommand({
   name: "say",
   description: "Say something!",
   allowInDMs: true,
+  guildPermissions: PermissionFlags.SendMessages,
   options: [
     {
       name: "text",
