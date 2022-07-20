@@ -1,3 +1,4 @@
+/* eslint-disable max-statements */
 import type { ModalActionRowComponent } from "discord.js";
 import type { ModalStructure } from "../../structures/ModalStructure.js";
 import {
@@ -5,6 +6,8 @@ import {
 } from "discord.js";
 import { isNullish } from "../../utilities/nullishAssertion.js";
 
+const ACCESS_ROLE_ID = "742869132990742688";
+const ROLES_CHANNEL_ID = "743079881398812693";
 const INTRODUCTION_CHANNEL_ID = "742871181929218161";
 const aboutInput = new TextInputComponent()
   .setCustomId("aboutInput")
@@ -45,8 +48,7 @@ const modalData: ModalStructure = {
       content: "Could not find the interaction channel!",
       ephemeral: true
     });
-
-    console.log(interaction, interaction.fields);
+    if (isNullish(interaction.member)) return;
 
     const aboutUser = interaction.fields.getTextInputValue("aboutInput");
     const userAge = interaction.fields.getTextInputValue("ageInput");
@@ -61,8 +63,14 @@ const modalData: ModalStructure = {
         `⚽ **My Hobbies:** ${userHobbies}`
       ].join("\n"));
 
+    if (Array.isArray(interaction.member.roles)) return interaction.reply({
+      content: "An unexpected error occured. Please try again.",
+      ephemeral: true
+    });
+
     await introductionChannel.send({ embeds: [ embedToSend ] });
-    await interaction.reply({ content: "Thank you for letting us know about yourself!", ephemeral: true });
+    await interaction.member.roles.add(ACCESS_ROLE_ID);
+    await interaction.reply({ content: `Thank you for letting us know about yourself! Grab yourself some roles from <#${ROLES_CHANNEL_ID}> to get access to the rest of the server.`, ephemeral: true });
   }
 };
 
