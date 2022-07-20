@@ -1,3 +1,4 @@
+/* eslint-disable max-lines-per-function */
 /* eslint-disable max-statements */
 import type { ModalActionRowComponent } from "discord.js";
 import type { ModalStructure } from "../../structures/ModalStructure.js";
@@ -68,8 +69,16 @@ const modalData: ModalStructure = {
       ephemeral: true
     });
 
+    try {
+      await interaction.member.roles.add(ACCESS_ROLE_ID);
+    } catch {
+      return interaction.reply({
+        content: "An unexpected error occured. Please try again.",
+        ephemeral: true
+      });
+    }
+
     await introductionChannel.send({ embeds: [ embedToSend ] });
-    await interaction.member.roles.add(ACCESS_ROLE_ID);
     await interaction.reply({ content: `Thank you for letting us know about yourself! Grab yourself some roles from <#${ROLES_CHANNEL_ID}> to get access to the rest of the server.`, ephemeral: true });
   }
 };
