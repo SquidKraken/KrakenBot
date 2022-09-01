@@ -102,6 +102,7 @@
         "before": false,
         "after": true
       }],
+      "@typescript-eslint/consistent-generic-constructors": [ "error", "constructor" ],
       "@typescript-eslint/consistent-indexed-object-style": [ "error", "record" ],
       "@typescript-eslint/consistent-type-assertions": [ "error", {
         "assertionStyle": "as",
@@ -433,8 +434,11 @@
       }],
       "@typescript-eslint/no-use-before-define": [ "error", {
         "classes": false,
+        "enums": true,
         "functions": false,
-        "variables": true
+        "typedefs": true,
+        "variables": true,
+        "ignoreTypeReferences": false
       }],
       "@typescript-eslint/no-useless-constructor": "error",
       "@typescript-eslint/no-useless-empty-export": "error",
@@ -455,7 +459,8 @@
       "@typescript-eslint/prefer-namespace-keyword": "error",
       "@typescript-eslint/prefer-nullish-coalescing": [ "error", {
         "ignoreConditionalTests": false,
-        "ignoreMixedLogicalExpressions": false
+        "ignoreMixedLogicalExpressions": false,
+        "ignoreTernaryTests": false
       }],
       "@typescript-eslint/prefer-optional-chain": "error",
       "@typescript-eslint/prefer-readonly": [ "error", {

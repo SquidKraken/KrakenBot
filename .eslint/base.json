@@ -678,6 +678,7 @@
     "semi-style": [ "error", "last" ],
     "sort-imports": "off",
     "sort-keys": [ "off", "asc", {
+      "allowLineSeparatedGroups": false,
       "caseSensitive": true,
       "natural": true,
       "minKeys": 2
