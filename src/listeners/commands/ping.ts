@@ -6,8 +6,8 @@ const pingCommand = createSlashCommand({
   allowInDMs: true,
   guildPermissions: PermissionFlags.SendMessages,
   options: [],
-  async run(_client, interaction): Promise<void> {
-    await interaction.reply("Pong!");
+  async run(_client, interaction) {
+    return interaction.reply("Pong!");
   }
 });
 

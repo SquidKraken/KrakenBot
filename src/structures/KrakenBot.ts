@@ -1,5 +1,5 @@
 import { REST } from "@discordjs/rest";
-import { Client, Intents } from "discord.js";
+import { Client, GatewayIntentBits } from "discord.js";
 import { ButtonHandler } from "../handlers/ButtonHandler.js";
 import { ClientHandler } from "../handlers/ClientHandler.js";
 import { CommandHandler } from "../handlers/CommandHandler.js";
@@ -7,16 +7,16 @@ import { ModalHandler } from "../handlers/ModalHandler.js";
 
 const BOT_CONFIG = {
   intents: [
-    Intents.FLAGS.GUILDS,
-    Intents.FLAGS.GUILD_MEMBERS,
-    Intents.FLAGS.GUILD_MESSAGES,
-    Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
-    Intents.FLAGS.GUILD_INTEGRATIONS,
-    Intents.FLAGS.GUILD_EMOJIS_AND_STICKERS,
-    Intents.FLAGS.GUILD_BANS,
-    Intents.FLAGS.GUILD_WEBHOOKS,
-    Intents.FLAGS.DIRECT_MESSAGES,
-    Intents.FLAGS.DIRECT_MESSAGE_REACTIONS
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMembers,
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.GuildMessageReactions,
+    GatewayIntentBits.GuildIntegrations,
+    GatewayIntentBits.GuildEmojisAndStickers,
+    GatewayIntentBits.GuildBans,
+    GatewayIntentBits.GuildWebhooks,
+    GatewayIntentBits.DirectMessages,
+    GatewayIntentBits.DirectMessageReactions
   ]
 };
 

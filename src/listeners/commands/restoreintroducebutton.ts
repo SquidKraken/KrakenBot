@@ -1,4 +1,5 @@
-import { MessageActionRow } from "discord.js";
+import type { ButtonBuilder } from "discord.js";
+import { ActionRowBuilder } from "discord.js";
 import { createSlashCommand, PermissionFlags } from "../../structures/SlashCommand.js";
 import { isNullish } from "../../utilities/nullishAssertion.js";
 
@@ -9,7 +10,7 @@ const pingCommand = createSlashCommand({
   guildPermissions: PermissionFlags.Administrator,
   options: [],
   // eslint-disable-next-line max-lines-per-function
-  async run(bot, interaction): Promise<void> {
+  async run(bot, interaction) {
     const introductionButton = bot.handlers.button.listeners.get("introduction")?.button;
     if (isNullish(introductionButton)) return interaction.reply({
       content: "Could not find the Introduction button data!",
@@ -22,7 +23,7 @@ const pingCommand = createSlashCommand({
 
     await interaction.deferReply({ ephemeral: true });
 
-    const buttonRow = new MessageActionRow()
+    const buttonRow = new ActionRowBuilder<ButtonBuilder>()
       .addComponents(introductionButton);
 
     try {
@@ -39,7 +40,7 @@ const pingCommand = createSlashCommand({
       });
     }
 
-    await interaction.editReply("Successfully set up the Introduction button!");
+    return interaction.editReply("Successfully set up the Introduction button!");
   }
 });
 

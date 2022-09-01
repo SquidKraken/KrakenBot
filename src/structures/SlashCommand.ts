@@ -1,5 +1,7 @@
 import type { ApplicationCommandOptionType } from "discord-api-types/v9";
-import type { ApplicationCommandOptionChoiceData, CommandInteraction, CommandInteractionOption } from "discord.js";
+import type {
+  ApplicationCommandOptionChoiceData, CommandInteraction, CommandInteractionOption, InteractionResponse, Message
+} from "discord.js";
 import type { KrakenBot } from "./KrakenBot.js";
 
 interface CommandOptionAccessors {
@@ -96,7 +98,8 @@ export interface SlashCommandStructure<TypeofOptions extends readonly CommandOpt
   run(
     client: KrakenBot,
     interaction: ContexedCommandInteraction<TypeofOptions>
-  ): Promise<void> | void;
+  // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
+  ): Promise<InteractionResponse | Message | void>;
 }
 
 export interface TransformedSlashCommandStructure<TypeofOptions extends readonly CommandOption[]> {
@@ -110,7 +113,8 @@ export interface TransformedSlashCommandStructure<TypeofOptions extends readonly
   run(
     client: KrakenBot,
     interaction: ContexedCommandInteraction<TypeofOptions>
-  ): Promise<void> | void;
+  // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
+  ): Promise<InteractionResponse | Message | void>;
 }
 
 export function createSlashCommand<TypeofOptions extends readonly CommandOption[]>(
