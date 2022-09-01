@@ -20,17 +20,6 @@ const BOT_CONFIG = {
   ]
 };
 
-export class KrakenBot {
-  readonly applicationID: string;
-  readonly client = new Client(BOT_CONFIG);
-  readonly handlers: BotHandlers;
-
-  constructor(botToken: string, applicationID: string) {
-    this.applicationID = applicationID;
-    this.handlers = new BotHandlers(this, botToken);
-  }
-}
-
 class BotHandlers {
   readonly button: ButtonHandler;
   readonly client: ClientHandler;
@@ -51,5 +40,16 @@ class BotHandlers {
     await this.client.loadAndRegisterListeners();
     await this.command.loadAndRegisterListeners();
     await this.modal.loadAndRegisterListeners();
+  }
+}
+
+export class KrakenBot {
+  readonly applicationID: string;
+  readonly client = new Client(BOT_CONFIG);
+  readonly handlers: BotHandlers;
+
+  constructor(botToken: string, applicationID: string) {
+    this.applicationID = applicationID;
+    this.handlers = new BotHandlers(this, botToken);
   }
 }
