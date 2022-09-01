@@ -16,7 +16,7 @@ export class CommandHandler extends BaseHandler<"commands"> {
     for (const [ commandName, commandData ] of this.listeners.entries()) {
       commands.push(commandData);
 
-      this.emitter.on(commandName, (...listenerArguments: Parameters<SlashCommandStructure["run"]>) => commandData.run(...listenerArguments));
+      this.emitter.on(commandName, async(...listenerArguments: Parameters<SlashCommandStructure["run"]>) => commandData.run(...listenerArguments));
     }
 
     await this.bot.handlers.rest.put(Routes.applicationCommands(this.bot.applicationID), { body: commands });

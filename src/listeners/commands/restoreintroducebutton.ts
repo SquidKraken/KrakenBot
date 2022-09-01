@@ -9,7 +9,7 @@ const pingCommand = createSlashCommand({
   guildPermissions: PermissionFlags.Administrator,
   options: [],
   // eslint-disable-next-line max-lines-per-function
-  async run(bot, interaction): Promise<void> {
+  async run(bot, interaction) {
     const introductionButton = bot.handlers.button.listeners.get("introduction")?.button;
     if (isNullish(introductionButton)) return interaction.reply({
       content: "Could not find the Introduction button data!",
@@ -39,7 +39,7 @@ const pingCommand = createSlashCommand({
       });
     }
 
-    await interaction.editReply("Successfully set up the Introduction button!");
+    return interaction.editReply("Successfully set up the Introduction button!");
   }
 });
 

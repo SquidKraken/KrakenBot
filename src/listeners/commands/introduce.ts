@@ -7,14 +7,14 @@ const introduceCommand = createSlashCommand({
   allowInDMs: false,
   guildPermissions: PermissionFlags.SendMessages,
   options: [],
-  async run(bot, interaction): Promise<void> {
+  async run(bot, interaction) {
     const introductionModal = bot.handlers.modal.listeners.get("introduction")?.modal;
     if (isNullish(introductionModal) || isNullish(interaction.guild)) return interaction.reply({
       content: "I could not run this command!",
       ephemeral: true
     });
 
-    await interaction.showModal(introductionModal);
+    return interaction.showModal(introductionModal);
   }
 });
 

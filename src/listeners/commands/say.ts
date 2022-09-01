@@ -14,14 +14,14 @@ const sayCommand = createSlashCommand({
       required: true
     }
   ] as const,
-  async run(_client, interaction): Promise<void> {
+  async run(_client, interaction) {
     const textToSay = interaction.options.getString("text");
     if (isNullish(textToSay)) return interaction.reply({
       content: "You have not provided anything for me to say!",
       ephemeral: true
     });
 
-    await interaction.reply(textToSay);
+    return interaction.reply(textToSay);
   }
 });
 
