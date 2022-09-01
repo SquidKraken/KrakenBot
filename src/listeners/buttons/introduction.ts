@@ -1,11 +1,11 @@
-import { MessageButton } from "discord.js";
+import { ButtonBuilder, ButtonStyle } from "discord.js";
 import type { ButtonStructure } from "../../structures/ButtonStructure.js";
 import { isNullish } from "../../utilities/nullishAssertion.js";
 
-const introductionButton = new MessageButton()
+const introductionButton = new ButtonBuilder()
   .setCustomId("introduction")
   .setLabel("Introduce Yourself!")
-  .setStyle("PRIMARY")
+  .setStyle(ButtonStyle.Primary)
   .setEmoji("👋");
 
 const introductionButtonData: ButtonStructure = {
@@ -18,7 +18,7 @@ const introductionButtonData: ButtonStructure = {
       ephemeral: true
     });
 
-    await interaction.showModal(introductionModal);
+    return interaction.showModal(introductionModal);
   }
 };
 
