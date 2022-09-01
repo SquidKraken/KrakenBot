@@ -1,4 +1,5 @@
-import { MessageActionRow } from "discord.js";
+import type { ButtonBuilder } from "discord.js";
+import { ActionRowBuilder } from "discord.js";
 import { createSlashCommand, PermissionFlags } from "../../structures/SlashCommand.js";
 import { isNullish } from "../../utilities/nullishAssertion.js";
 
@@ -22,7 +23,7 @@ const pingCommand = createSlashCommand({
 
     await interaction.deferReply({ ephemeral: true });
 
-    const buttonRow = new MessageActionRow()
+    const buttonRow = new ActionRowBuilder<ButtonBuilder>()
       .addComponents(introductionButton);
 
     try {
