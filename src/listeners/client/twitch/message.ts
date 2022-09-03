@@ -3,8 +3,7 @@ import type { TwitchTemplate } from "../../../templates/TwitchTemplate.js";
 import { twitchLog } from "../../../utilities/logger.js";
 import { isNullish } from "../../../utilities/nullishAssertion.js";
 
-// eslint-disable-next-line unicorn/no-unsafe-regex
-const textCommandPattern = /^!(?<rawCommandName>[a-zA-Z]+)(?:\s(?<rawCommandArguments>\w+))?$/gui;
+const textCommandPattern = /^!(?<rawCommandName>[a-zA-Z]+)\s*(?<rawCommandArguments>\w*)$/gui;
 const twitchMessage: TwitchTemplate<"message"> = {
   name: "message",
   runOnce: false,
