@@ -1,13 +1,12 @@
-import type { KrakenBot } from "../structures/KrakenBot.js";
-import { BaseHandler } from "./BaseHandler.js";
+import type { KrakenBot } from "../../structures/KrakenBot.js";
+import { InteractionHandler } from "../BaseHandler.js";
 
-export class ButtonHandler extends BaseHandler<"buttons"> {
+export class ButtonHandler extends InteractionHandler<"buttons"> {
   constructor(bot: KrakenBot) {
     super(bot, "buttons");
   }
 
   registerListeners(): void {
-    // eslint-disable-next-line curly
     for (const [ buttonName, buttonData ] of this.listeners.entries()) {
       this.emitter.on(buttonName, buttonData.run.bind(buttonData));
     }
