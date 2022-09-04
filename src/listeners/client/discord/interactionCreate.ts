@@ -1,8 +1,8 @@
-import type { DiscordTemplate } from "../../../templates/DiscordTemplate.js";
+import { createDiscordListener } from "../../../templates/DiscordTemplate.js";
 import { DiscordController } from "../../../controllers/DiscordController.js";
 import { isNullish } from "../../../utilities/nullishAssertion.js";
 
-const discordInteractionCreate: DiscordTemplate<"interactionCreate"> = {
+const discordInteractionCreate = createDiscordListener({
   name: "interactionCreate",
   runOnce: false,
   run(bot, interaction) {
@@ -21,6 +21,6 @@ const discordInteractionCreate: DiscordTemplate<"interactionCreate"> = {
       bot.interactions.modal.emitter.emit(customId, bot, interaction);
     }
   }
-};
+});
 
 export default discordInteractionCreate;

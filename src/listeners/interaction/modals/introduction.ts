@@ -4,7 +4,7 @@ import {
 } from "discord.js";
 import { ACCESS_ROLE_ID, INTRODUCTION_CHANNEL_ID, ROLES_CHANNEL_ID } from "../../../constants.js";
 
-import type { ModalTemplate } from "../../../templates/ModalTemplate.js";
+import { createModal } from "../../../templates/ModalTemplate.js";
 import { isNullish } from "../../../utilities/nullishAssertion.js";
 
 const aboutInput = new TextInputBuilder()
@@ -37,7 +37,7 @@ const introductionModal = new ModalBuilder()
     new ActionRowBuilder<ModalActionRowComponentBuilder>().addComponents(hobbiesInput)
   );
 
-const modalData: ModalTemplate = {
+const modalData = createModal({
   name: "introduction",
   modal: introductionModal,
   // eslint-disable-next-line max-lines-per-function, max-statements
@@ -86,6 +86,6 @@ const modalData: ModalTemplate = {
       ephemeral: true
     });
   }
-};
+});
 
 export default modalData;

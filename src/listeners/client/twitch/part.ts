@@ -1,7 +1,7 @@
-import type { TwitchTemplate } from "../../../templates/TwitchTemplate.js";
+import { createTwitchListener } from "../../../templates/TwitchTemplate.js";
 import { twitchLog } from "../../../utilities/logger.js";
 
-const twitchChannelPart: TwitchTemplate<"part"> = {
+const twitchChannelPart = createTwitchListener({
   name: "part",
   runOnce: false,
   run(_bot, _client, channel, username, isSelf) {
@@ -11,6 +11,6 @@ const twitchChannelPart: TwitchTemplate<"part"> = {
 
     void twitchLog(`${targetPhrase} parted from ${channel}'s channel`);
   }
-};
+});
 
 export default twitchChannelPart;

@@ -1,10 +1,10 @@
 import { TwitchController } from "../../../controllers/TwitchController.js";
-import type { TwitchTemplate } from "../../../templates/TwitchTemplate.js";
+import { createTwitchListener } from "../../../templates/TwitchTemplate.js";
 import { twitchLog } from "../../../utilities/logger.js";
 import { isNullish } from "../../../utilities/nullishAssertion.js";
 
 const textCommandPattern = /^!(?<rawCommandName>[a-zA-Z]+)\s*(?<rawCommandArguments>\w*)$/gui;
-const twitchMessage: TwitchTemplate<"message"> = {
+const twitchMessage = createTwitchListener({
   name: "message",
   runOnce: false,
   // eslint-disable-next-line max-params, max-statements
@@ -31,6 +31,6 @@ const twitchMessage: TwitchTemplate<"message"> = {
 
     return bot.interactions.command.runIfCompatible(command, "twitch", bot, twitchController);
   }
-};
+});
 
 export default twitchMessage;

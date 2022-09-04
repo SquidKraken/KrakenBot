@@ -1,6 +1,6 @@
 import { ButtonBuilder, ButtonStyle } from "discord.js";
 
-import type { ButtonTemplate } from "../../../templates/ButtonTemplate.js";
+import { createButton } from "../../../templates/ButtonTemplate.js";
 import { isNullish } from "../../../utilities/nullishAssertion.js";
 
 const introductionButton = new ButtonBuilder()
@@ -9,7 +9,7 @@ const introductionButton = new ButtonBuilder()
   .setStyle(ButtonStyle.Primary)
   .setEmoji("👋");
 
-const introductionButtonData: ButtonTemplate = {
+const introductionButtonData = createButton({
   name: "introduction",
   button: introductionButton,
   async run(bot, interaction) {
@@ -21,6 +21,6 @@ const introductionButtonData: ButtonTemplate = {
 
     return interaction.showModal(introductionModal);
   }
-};
+});
 
 export default introductionButtonData;

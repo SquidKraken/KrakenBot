@@ -1,7 +1,7 @@
-import type { TwitchTemplate } from "../../../templates/TwitchTemplate.js";
+import { createTwitchListener } from "../../../templates/TwitchTemplate.js";
 import { twitchLog } from "../../../utilities/logger.js";
 
-const twitchChannelJoin: TwitchTemplate<"join"> = {
+const twitchChannelJoin = createTwitchListener({
   name: "join",
   runOnce: false,
   run(_bot, _client, channel, username, isSelf) {
@@ -11,6 +11,6 @@ const twitchChannelJoin: TwitchTemplate<"join"> = {
 
     void twitchLog(`${targetPhrase} joined ${channel}'s channel`);
   }
-};
+});
 
 export default twitchChannelJoin;
