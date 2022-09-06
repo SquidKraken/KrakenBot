@@ -16,11 +16,7 @@ const twitchMessage = createTwitchListener({
     void twitchLog(`Received ${messageType} from ${channel}: ${messageContent}`, userstate);
 
     const commandMatch = textCommandPattern.exec(messageContent);
-    if (isNullish(commandMatch) || isNullish(commandMatch.groups)) {
-      if (userstate.username !== "spuggle_" || messageContent !== "Everybody welcome KrakenBot!") return;
-
-      return client.say(channel, "WOOOOOOOOOOOO LETS GOOOOOOOOOOO!");
-    }
+    if (isNullish(commandMatch) || isNullish(commandMatch.groups)) return;
 
     const { rawCommandName = "" } = commandMatch.groups;
     const commandName = rawCommandName.toLowerCase();
