@@ -9,24 +9,24 @@ import type { DiscordTemplate } from "../templates/DiscordTemplate.js";
 import type { ModalTemplate } from "../templates/ModalTemplate.js";
 import type { TwitchTemplate } from "../templates/TwitchTemplate.js";
 
-interface ClientListenerStructures {
+interface ClientListenerTemplates {
   discord: DiscordTemplate;
   twitch: TwitchTemplate;
 }
 
-interface InteractionListenerStructures {
+interface InteractionListenerTemplates {
   buttons: ButtonTemplate;
   commands: CommandTemplate;
   modals: ModalTemplate;
 }
 
-type ListenerStructures = ClientListenerStructures & InteractionListenerStructures;
+type ListenerStructures = ClientListenerTemplates & InteractionListenerTemplates;
 
-type ClientListenerNames = keyof ClientListenerStructures;
-type InteractionListenerNames = keyof InteractionListenerStructures;
+type ClientListenerNames = keyof ClientListenerTemplates;
+type InteractionListenerNames = keyof InteractionListenerTemplates;
 type ListenerNames = keyof ListenerStructures;
 
-export type SimpleEventEmitter = Pick<EventEmitter, "emit" | "on" | "removeAllListeners">;
+export type BaseEventEmitter = Pick<EventEmitter, "emit" | "on" | "removeAllListeners">;
 
 const listenerType: Record<ClientListenerNames | InteractionListenerNames, "client" | "interaction"> = {
   buttons: "interaction",
@@ -40,7 +40,7 @@ abstract class BaseHandler<ListenerName extends ListenerNames> {
   #listenerName: ListenerName;
   #listenerDirectory: string;
   readonly bot: KrakenBot;
-  readonly emitter: SimpleEventEmitter = new EventEmitter();
+  readonly emitter: BaseEventEmitter = new EventEmitter();
   readonly listeners = new Map<string, ListenerStructures[ListenerName]>();
 
   constructor(bot: KrakenBot, listenerToHandle: ListenerName) {

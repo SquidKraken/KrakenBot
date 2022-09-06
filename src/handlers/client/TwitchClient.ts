@@ -2,14 +2,14 @@ import EventEmitter from "node:events";
 
 import type { Client, Events } from "tmi.js";
 import type { KrakenBot } from "../../structures/KrakenBot.js";
-import type { SimpleEventEmitter } from "../BaseHandler.js";
+import type { BaseEventEmitter } from "../BaseHandler.js";
 import { ClientHandler } from "../BaseHandler.js";
 import { isNullish } from "../../utilities/nullishAssertion.js";
 
 // eslint-disable-next-line unicorn/prevent-abbreviations, @typescript-eslint/no-explicit-any
 type ListenerType<T> = [T] extends [(...args: infer U)=> any] ? U : [T] extends [never] ? [] : [T];
 
-class TwitchEmitter extends EventEmitter implements SimpleEventEmitter {
+class TwitchEmitter extends EventEmitter implements BaseEventEmitter {
   readonly client: Client;
 
   constructor(client: Client) {
