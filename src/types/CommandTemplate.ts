@@ -102,9 +102,9 @@ interface BothCompatible {
 }
 
 type CommandCompatibility = BothCompatible | OnlyDiscordCompatible | OnlyTwitchCompatible;
-type PickCompatibleController<GivenCompatibility extends CommandCompatibility> = (
+type PickCompatibleController<GivenCompatibility extends CommandCompatibility, AllowedInDMs extends boolean> = (
   GivenCompatibility extends BothCompatible ? BaseController : (
-    GivenCompatibility extends OnlyDiscordCompatible ? DiscordCommandController : (
+    GivenCompatibility extends OnlyDiscordCompatible ? DiscordCommandController<AllowedInDMs> : (
       GivenCompatibility extends OnlyTwitchCompatible ? TwitchController : never
     )
   )
@@ -113,27 +113,29 @@ type PickCompatibleController<GivenCompatibility extends CommandCompatibility> =
 // Contexted command interaction: ContexedCommandInteraction<GivenOptions>
 export interface CommandTemplate<
   GivenCompatibility extends CommandCompatibility = CommandCompatibility,
-  GivenOptions extends ReadonlyCommandOptions = ReadonlyCommandOptions
+  GivenOptions extends ReadonlyCommandOptions = ReadonlyCommandOptions,
+  AllowedInDMs extends boolean = boolean
 > {
   readonly name: string;
   readonly description: string;
-  readonly allowInDMs: boolean;
+  readonly allowInDMs: AllowedInDMs;
   readonly guildPermissions: bigint;
   readonly compatibility: GivenOptions[0] extends undefined ? GivenCompatibility : { discord: true; twitch: false; };
   readonly options: GivenOptions;
   run(
     client: KrakenBot,
-    controller: PickCompatibleController<GivenCompatibility>
+    controller: PickCompatibleController<GivenCompatibility, AllowedInDMs>
   ): Promise<unknown>;
 }
 
 export interface DiscordCommandTemplate<
-  GivenOptions extends ReadonlyCommandOptions = ReadonlyCommandOptions
+  GivenOptions extends ReadonlyCommandOptions = ReadonlyCommandOptions,
+  AllowedInDMs extends boolean = boolean
 > {
   readonly name: string;
   readonly description: string;
   // eslint-disable-next-line @typescript-eslint/naming-convention
-  readonly dm_permissions: boolean;
+  readonly dm_permissions: AllowedInDMs;
   // eslint-disable-next-line @typescript-eslint/naming-convention
   readonly default_member_permissions: string;
   readonly options: GivenOptions;
@@ -141,19 +143,21 @@ export interface DiscordCommandTemplate<
 
 export function createCommand<
   GivenCompatibility extends CommandCompatibility,
-  GivenOptions extends ReadonlyCommandOptions
+  GivenOptions extends ReadonlyCommandOptions,
+  AllowedInDMs extends boolean
 >(
-  commandStructure: CommandTemplate<GivenCompatibility, GivenOptions>
-): CommandTemplate<GivenCompatibility, GivenOptions> {
+  commandStructure: CommandTemplate<GivenCompatibility, GivenOptions, AllowedInDMs>
+): CommandTemplate<GivenCompatibility, GivenOptions, AllowedInDMs> {
   return commandStructure;
 }
 
 export function transformToDiscordCommand<
   GivenCompatibility extends CommandCompatibility,
-  GivenOptions extends ReadonlyCommandOptions
+  GivenOptions extends ReadonlyCommandOptions,
+  AllowedInDMs extends boolean
 >(
-  commandStructure: CommandTemplate<GivenCompatibility, GivenOptions>
-): DiscordCommandTemplate {
+  commandStructure: CommandTemplate<GivenCompatibility, GivenOptions, AllowedInDMs>
+): DiscordCommandTemplate<GivenOptions, AllowedInDMs> {
   return {
     options: commandStructure.options,
     name: commandStructure.name,

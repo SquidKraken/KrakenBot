@@ -18,14 +18,14 @@ export abstract class BaseController {
   }
 
   abstract reply(
-    _options: MessagePayload | RequiredReplyOptions | string
+    options: MessagePayload | RequiredReplyOptions | string
   ): Promise<InteractionResponse | SayReturnType | void>;
 
   abstract send(
-    _options: MessagePayload | RequiredMessageOptions | string
+    options: MessagePayload | RequiredMessageOptions | string
   ): Promise<Message | SayReturnType | void>;
 
   abstract error(
-    _options: string
+    options: string
   ): Promise<InteractionResponse | SayReturnType | void>;
 }

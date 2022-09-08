@@ -1,7 +1,7 @@
 import type { ButtonInteraction, ChatInputCommandInteraction, ModalSubmitInteraction } from "discord.js";
 
 import type { KrakenBot } from "../../../structures/KrakenBot.js";
-import { createDiscordListener } from "../../../templates/DiscordTemplate.js";
+import { createDiscordListener } from "../../../types/DiscordTemplate.js";
 import { DiscordBaseController, DiscordButtonController, DiscordCommandController } from "../../../controllers/DiscordController.js";
 import { isNullish } from "../../../utilities/nullishAssertion.js";
 

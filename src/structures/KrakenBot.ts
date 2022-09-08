@@ -1,3 +1,4 @@
+/* eslint-disable max-classes-per-file */
 import type { Options } from "tmi.js";
 import { Client as DJSClient } from "discord.js";
 import { Client as TMIClient } from "tmi.js";
@@ -8,6 +9,8 @@ import { TwitchClient } from "../handlers/client/TwitchClient.js";
 import { ButtonHandler } from "../handlers/interaction/ButtonHandler.js";
 import { CommandHandler } from "../handlers/interaction/CommandHandler.js";
 import { ModalHandler } from "../handlers/interaction/ModalHandler.js";
+import { IntroductionService } from "../services/IntroductionService.js";
+import { GatekeepService } from "../services/GatekeepService.js";
 
 class BotClients {
   readonly discord: DiscordClient;
@@ -48,13 +51,25 @@ class BotInteractions {
   }
 }
 
+class BotServices {
+  readonly gatekeep: GatekeepService;
+  readonly introduction: IntroductionService;
+
+  constructor(bot: KrakenBot) {
+    this.gatekeep = new GatekeepService(bot);
+    this.introduction = new IntroductionService(bot);
+  }
+}
+
 export class KrakenBot {
   readonly clients: BotClients;
   readonly interactions: BotInteractions;
+  readonly services: BotServices;
 
   constructor(discordBotToken: string, discordApplicationID: string, twitchCredentials: Options["identity"]) {
     this.clients = new BotClients(this, discordBotToken, discordApplicationID, twitchCredentials);
     this.interactions = new BotInteractions(this);
+    this.services = new BotServices(this);
   }
 
   async login(discordToken: string): Promise<KrakenBot> {

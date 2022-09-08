@@ -1,4 +1,4 @@
-import { createCommand, PermissionFlags } from "../../../templates/CommandTemplate.js";
+import { createCommand, PermissionFlags } from "../../../types/CommandTemplate.js";
 
 const pingCommand = createCommand({
   name: "ping",

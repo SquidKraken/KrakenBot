@@ -1,5 +1,5 @@
 import { TwitchController } from "../../../controllers/TwitchController.js";
-import { createTwitchListener } from "../../../templates/TwitchTemplate.js";
+import { createTwitchListener } from "../../../types/TwitchTemplate.js";
 import { twitchLog } from "../../../utilities/logger.js";
 import { isNullish } from "../../../utilities/nullishAssertion.js";
 

@@ -1,10 +1,12 @@
 /* eslint-disable max-classes-per-file */
 /* eslint-disable class-methods-use-this */
 import type {
-  ButtonInteraction, ChatInputCommandInteraction, CommandInteraction, InteractionReplyOptions,
-  MessageContextMenuCommandInteraction, ModalSubmitInteraction, SelectMenuInteraction, UserContextMenuCommandInteraction,
-  InteractionResponse, Message, MessageOptions, MessagePayload
+  CommandInteraction, InteractionReplyOptions, InteractionResponse, Message, MessageOptions, MessagePayload
 } from "discord.js";
+
+import type {
+  RequiredInteractions, PickModalInteraction, PickButtonInteraction, PickCommandInteraction, PickNonModalInteraction
+} from "../types/CustomInteractions.js";
 import { BaseController, BaseFormatter } from "./BaseController.js";
 
 type ShowModalMethod = CommandInteraction[ "showModal" ];
@@ -17,20 +19,10 @@ class DiscordFormatter extends BaseFormatter {
   }
 }
 
-type ComponentInteractions = ButtonInteraction
-| ChatInputCommandInteraction
-| MessageContextMenuCommandInteraction
-| SelectMenuInteraction
-| UserContextMenuCommandInteraction;
-
-type ModalInteraction = ModalSubmitInteraction;
-
-type BaseInteractions = ComponentInteractions | ModalInteraction;
-
 export class DiscordBaseController extends BaseController {
-  readonly interaction: BaseInteractions;
+  readonly interaction: RequiredInteractions;
 
-  constructor(interaction: BaseInteractions) {
+  constructor(interaction: RequiredInteractions) {
     const formatter = new DiscordFormatter();
     super(formatter);
     this.interaction = interaction;
@@ -60,10 +52,10 @@ export class DiscordBaseController extends BaseController {
   }
 }
 
-class DiscordInteractableController extends DiscordBaseController {
-  override readonly interaction: ComponentInteractions;
+export class DiscordNonModalController<AllowedInDMs extends boolean> extends DiscordBaseController {
+  override readonly interaction: PickNonModalInteraction<AllowedInDMs>;
 
-  constructor(interaction: ComponentInteractions) {
+  constructor(interaction: PickNonModalInteraction<AllowedInDMs>) {
     super(interaction);
     this.interaction = interaction;
   }
@@ -73,28 +65,28 @@ class DiscordInteractableController extends DiscordBaseController {
   }
 }
 
-export class DiscordModalController extends DiscordBaseController {
-  override readonly interaction: ModalSubmitInteraction;
+export class DiscordModalController<AllowedInDMs extends boolean> extends DiscordBaseController {
+  override readonly interaction: PickModalInteraction<AllowedInDMs>;
 
-  constructor(interaction: ModalSubmitInteraction) {
+  constructor(interaction: PickModalInteraction<AllowedInDMs>) {
     super(interaction);
     this.interaction = interaction;
   }
 }
 
-export class DiscordButtonController extends DiscordInteractableController {
-  override readonly interaction: ButtonInteraction;
+export class DiscordButtonController<AllowedInDMs extends boolean> extends DiscordNonModalController<AllowedInDMs> {
+  override readonly interaction: PickButtonInteraction<AllowedInDMs>;
 
-  constructor(interaction: ButtonInteraction) {
+  constructor(interaction: PickButtonInteraction<AllowedInDMs>) {
     super(interaction);
     this.interaction = interaction;
   }
 }
 
-export class DiscordCommandController extends DiscordInteractableController {
-  override readonly interaction: ChatInputCommandInteraction;
+export class DiscordCommandController<AllowedInDMs extends boolean> extends DiscordNonModalController<AllowedInDMs> {
+  override readonly interaction: PickCommandInteraction<AllowedInDMs>;
 
-  constructor(interaction: ChatInputCommandInteraction) {
+  constructor(interaction: PickCommandInteraction<AllowedInDMs>) {
     super(interaction);
     this.interaction = interaction;
   }

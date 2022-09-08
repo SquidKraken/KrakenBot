@@ -1,5 +1,5 @@
 import { YOUTUBE_LINK } from "../../../constants.js";
-import { createCommand, PermissionFlags } from "../../../templates/CommandTemplate.js";
+import { createCommand, PermissionFlags } from "../../../types/CommandTemplate.js";
 
 const discordCommand = createCommand({
   name: "youtube",

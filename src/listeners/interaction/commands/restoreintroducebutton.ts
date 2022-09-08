@@ -1,7 +1,7 @@
 import type { ButtonBuilder } from "discord.js";
 import { ActionRowBuilder } from "discord.js";
 
-import { createCommand, PermissionFlags } from "../../../templates/CommandTemplate.js";
+import { createCommand, PermissionFlags } from "../../../types/CommandTemplate.js";
 import { isNullish } from "../../../utilities/nullishAssertion.js";
 
 const restoreIntroduceButtonCommand = createCommand({
