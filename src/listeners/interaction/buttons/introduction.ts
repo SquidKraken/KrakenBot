@@ -1,7 +1,6 @@
 import { ButtonBuilder, ButtonStyle } from "discord.js";
 
-import { createButton } from "../../../templates/ButtonTemplate.js";
-import { isNullish } from "../../../utilities/nullishAssertion.js";
+import { createButton } from "../../../types/ButtonTemplate.js";
 
 const introductionButton = new ButtonBuilder()
   .setCustomId("introduction")
@@ -11,15 +10,10 @@ const introductionButton = new ButtonBuilder()
 
 const introductionButtonData = createButton({
   name: "introduction",
+  allowInDMs: false,
   button: introductionButton,
-  async run(bot, controller) {
-    const introductionModal = bot.interactions.modal.listeners.get("introduction")?.modal;
-    if (isNullish(introductionModal)) return controller.reply({
-      content: "Something went wrong!",
-      ephemeral: true
-    });
-
-    return controller.showModal(introductionModal);
+  async run(bot, context) {
+    return bot.services.introduction.requestDetailsUsing(context);
   }
 });
 

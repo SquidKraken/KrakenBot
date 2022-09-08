@@ -1,4 +1,4 @@
-import { CommandOptionType, createCommand, PermissionFlags } from "../../../templates/CommandTemplate.js";
+import { CommandOptionType, createCommand, PermissionFlags } from "../../../types/CommandTemplate.js";
 import { isNullish } from "../../../utilities/nullishAssertion.js";
 
 const sayCommand = createCommand({
@@ -18,11 +18,11 @@ const sayCommand = createCommand({
       required: true
     }
   ] as const,
-  async run(_bot, controller) {
-    const textToSay = controller.interaction.options.getString("text");
-    if (isNullish(textToSay)) return controller.error("You have not provided anything for me to say!");
+  async run(_bot, context) {
+    const textToSay = context.interaction.options.getString("text");
+    if (isNullish(textToSay)) return context.error("You have not provided anything for me to say!");
 
-    return controller.reply(textToSay);
+    return context.reply(textToSay);
   }
 });
 

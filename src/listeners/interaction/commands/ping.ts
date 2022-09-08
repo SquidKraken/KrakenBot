@@ -1,4 +1,4 @@
-import { createCommand, PermissionFlags } from "../../../templates/CommandTemplate.js";
+import { createCommand, PermissionFlags } from "../../../types/CommandTemplate.js";
 
 const pingCommand = createCommand({
   name: "ping",
@@ -10,8 +10,8 @@ const pingCommand = createCommand({
     twitch: true
   },
   options: [],
-  async run(_bot, controller) {
-    return controller.reply("Pong!");
+  async run(_bot, context) {
+    return context.reply("Pong!");
   }
 });
 

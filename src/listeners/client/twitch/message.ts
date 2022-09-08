@@ -1,5 +1,5 @@
-import { TwitchController } from "../../../controllers/TwitchController.js";
-import { createTwitchListener } from "../../../templates/TwitchTemplate.js";
+import { TwitchContext } from "../../../contexts/TwitchContext.js";
+import { createTwitchListener } from "../../../types/TwitchTemplate.js";
 import { twitchLog } from "../../../utilities/logger.js";
 import { isNullish } from "../../../utilities/nullishAssertion.js";
 
@@ -29,9 +29,9 @@ const twitchMessage = createTwitchListener({
     const command = bot.interactions.command.listeners.get(commandName);
     if (isNullish(command)) return;
 
-    const twitchController = new TwitchController(client, channel, userstate);
+    const context = new TwitchContext(client, channel, userstate);
 
-    return bot.interactions.command.runIfCompatible(command, "twitch", bot, twitchController);
+    return bot.interactions.command.runIfCompatible(command, "twitch", bot, context);
   }
 });
 

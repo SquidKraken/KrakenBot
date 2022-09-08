@@ -1,5 +1,4 @@
-import { createCommand, PermissionFlags } from "../../../templates/CommandTemplate.js";
-import { isNullish } from "../../../utilities/nullishAssertion.js";
+import { createCommand, PermissionFlags } from "../../../types/CommandTemplate.js";
 
 const introduceCommand = createCommand({
   name: "introduce",
@@ -11,11 +10,8 @@ const introduceCommand = createCommand({
     twitch: false
   },
   options: [],
-  async run(bot, controller) {
-    const introductionModal = bot.interactions.modal.listeners.get("introduction")?.modal;
-    if (isNullish(introductionModal)) return controller.error("I could not run this command!");
-
-    return controller.showModal(introductionModal);
+  async run(bot, context) {
+    return bot.services.introduction.requestDetailsUsing(context);
   }
 });
 

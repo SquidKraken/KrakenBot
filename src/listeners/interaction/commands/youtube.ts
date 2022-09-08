@@ -1,5 +1,5 @@
 import { YOUTUBE_LINK } from "../../../constants.js";
-import { createCommand, PermissionFlags } from "../../../templates/CommandTemplate.js";
+import { createCommand, PermissionFlags } from "../../../types/CommandTemplate.js";
 
 const discordCommand = createCommand({
   name: "youtube",
@@ -11,10 +11,10 @@ const discordCommand = createCommand({
     twitch: true
   },
   options: [],
-  async run(_bot, controller) {
-    const content = controller.formatter.hyperlink("Squid's YouTube", YOUTUBE_LINK, "dictionary");
+  async run(_bot, context) {
+    const content = context.formatter.hyperlink("Squid's YouTube", YOUTUBE_LINK, "dictionary");
 
-    return controller.reply(content);
+    return context.reply(content);
   }
 });
 

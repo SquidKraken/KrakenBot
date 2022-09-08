@@ -1,9 +1,9 @@
 import type { ApplicationCommandOptionType } from "discord-api-types/v9";
 import type { CommandInteraction, CommandInteractionOption } from "discord.js";
 import type { KrakenBot } from "../structures/KrakenBot.js";
-import type { BaseController } from "../controllers/BaseController.js";
-import type { DiscordCommandController } from "../controllers/DiscordController.js";
-import type { TwitchController } from "../controllers/TwitchController.js";
+import type { BaseContext } from "../contexts/BaseContext.js";
+import type { DiscordCommandContext } from "../contexts/DiscordContext.js";
+import type { TwitchContext } from "../contexts/TwitchContext.js";
 
 interface CommandOptionAccessors {
   getSubcommand(required?: true): string;
@@ -102,10 +102,10 @@ interface BothCompatible {
 }
 
 type CommandCompatibility = BothCompatible | OnlyDiscordCompatible | OnlyTwitchCompatible;
-type PickCompatibleController<GivenCompatibility extends CommandCompatibility> = (
-  GivenCompatibility extends BothCompatible ? BaseController : (
-    GivenCompatibility extends OnlyDiscordCompatible ? DiscordCommandController : (
-      GivenCompatibility extends OnlyTwitchCompatible ? TwitchController : never
+type PickCompatibleContext<GivenCompatibility extends CommandCompatibility, AllowedInDMs extends boolean> = (
+  GivenCompatibility extends BothCompatible ? BaseContext : (
+    GivenCompatibility extends OnlyDiscordCompatible ? DiscordCommandContext<AllowedInDMs> : (
+      GivenCompatibility extends OnlyTwitchCompatible ? TwitchContext : never
     )
   )
 );
@@ -113,27 +113,29 @@ type PickCompatibleController<GivenCompatibility extends CommandCompatibility> =
 // Contexted command interaction: ContexedCommandInteraction<GivenOptions>
 export interface CommandTemplate<
   GivenCompatibility extends CommandCompatibility = CommandCompatibility,
-  GivenOptions extends ReadonlyCommandOptions = ReadonlyCommandOptions
+  GivenOptions extends ReadonlyCommandOptions = ReadonlyCommandOptions,
+  AllowedInDMs extends boolean = boolean
 > {
   readonly name: string;
   readonly description: string;
-  readonly allowInDMs: boolean;
+  readonly allowInDMs: AllowedInDMs;
   readonly guildPermissions: bigint;
   readonly compatibility: GivenOptions[0] extends undefined ? GivenCompatibility : { discord: true; twitch: false; };
   readonly options: GivenOptions;
   run(
     client: KrakenBot,
-    controller: PickCompatibleController<GivenCompatibility>
+    context: PickCompatibleContext<GivenCompatibility, AllowedInDMs>
   ): Promise<unknown>;
 }
 
 export interface DiscordCommandTemplate<
-  GivenOptions extends ReadonlyCommandOptions = ReadonlyCommandOptions
+  GivenOptions extends ReadonlyCommandOptions = ReadonlyCommandOptions,
+  AllowedInDMs extends boolean = boolean
 > {
   readonly name: string;
   readonly description: string;
   // eslint-disable-next-line @typescript-eslint/naming-convention
-  readonly dm_permissions: boolean;
+  readonly dm_permissions: AllowedInDMs;
   // eslint-disable-next-line @typescript-eslint/naming-convention
   readonly default_member_permissions: string;
   readonly options: GivenOptions;
@@ -141,19 +143,21 @@ export interface DiscordCommandTemplate<
 
 export function createCommand<
   GivenCompatibility extends CommandCompatibility,
-  GivenOptions extends ReadonlyCommandOptions
+  GivenOptions extends ReadonlyCommandOptions,
+  AllowedInDMs extends boolean
 >(
-  commandStructure: CommandTemplate<GivenCompatibility, GivenOptions>
-): CommandTemplate<GivenCompatibility, GivenOptions> {
+  commandStructure: CommandTemplate<GivenCompatibility, GivenOptions, AllowedInDMs>
+): CommandTemplate<GivenCompatibility, GivenOptions, AllowedInDMs> {
   return commandStructure;
 }
 
 export function transformToDiscordCommand<
   GivenCompatibility extends CommandCompatibility,
-  GivenOptions extends ReadonlyCommandOptions
+  GivenOptions extends ReadonlyCommandOptions,
+  AllowedInDMs extends boolean
 >(
-  commandStructure: CommandTemplate<GivenCompatibility, GivenOptions>
-): DiscordCommandTemplate {
+  commandStructure: CommandTemplate<GivenCompatibility, GivenOptions, AllowedInDMs>
+): DiscordCommandTemplate<GivenOptions, AllowedInDMs> {
   return {
     options: commandStructure.options,
     name: commandStructure.name,

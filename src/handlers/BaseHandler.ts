@@ -3,11 +3,11 @@ import path from "node:path";
 import { readdir } from "node:fs/promises";
 
 import type { KrakenBot } from "../structures/KrakenBot.js";
-import type { ButtonTemplate } from "../templates/ButtonTemplate.js";
-import type { CommandTemplate } from "../templates/CommandTemplate.js";
-import type { DiscordTemplate } from "../templates/DiscordTemplate.js";
-import type { ModalTemplate } from "../templates/ModalTemplate.js";
-import type { TwitchTemplate } from "../templates/TwitchTemplate.js";
+import type { ButtonTemplate } from "../types/ButtonTemplate.js";
+import type { CommandTemplate } from "../types/CommandTemplate.js";
+import type { DiscordTemplate } from "../types/DiscordTemplate.js";
+import type { ModalTemplate } from "../types/ModalTemplate.js";
+import type { TwitchTemplate } from "../types/TwitchTemplate.js";
 
 interface ClientListenerTemplates {
   discord: DiscordTemplate;
