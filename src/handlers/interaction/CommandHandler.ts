@@ -1,6 +1,6 @@
 import { Routes } from "discord-api-types/v9";
 
-import type { BaseController } from "../../controllers/BaseController.js";
+import type { BaseContext } from "../../contexts/BaseContext.js";
 import type { KrakenBot } from "../../structures/KrakenBot.js";
 import type { CommandTemplate, DiscordCommandTemplate } from "../../types/CommandTemplate.js";
 import { InteractionHandler } from "../BaseHandler.js";
@@ -29,9 +29,9 @@ export class CommandHandler extends InteractionHandler<"commands"> {
       .put(Routes.applicationCommands(this.bot.clients.discord.applicationID), { body: commands });
   }
 
-  runIfCompatible(command: CommandTemplate, source: "discord" | "twitch", bot: KrakenBot, controller: BaseController): unknown {
+  runIfCompatible(command: CommandTemplate, source: "discord" | "twitch", bot: KrakenBot, context: BaseContext): unknown {
     if (!command.compatibility[source]) return;
 
-    return this.emitter.emit(command.name, bot, controller);
+    return this.emitter.emit(command.name, bot, context);
   }
 }

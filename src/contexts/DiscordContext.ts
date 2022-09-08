@@ -7,7 +7,7 @@ import type {
 import type {
   RequiredInteractions, PickModalInteraction, PickButtonInteraction, PickCommandInteraction, PickNonModalInteraction
 } from "../types/CustomInteractions.js";
-import { BaseController, BaseFormatter } from "./BaseController.js";
+import { BaseContext, BaseFormatter } from "./BaseContext.js";
 
 type ShowModalMethod = CommandInteraction[ "showModal" ];
 type DeferReplyMethod = CommandInteraction[ "deferReply" ];
@@ -19,7 +19,7 @@ class DiscordFormatter extends BaseFormatter {
   }
 }
 
-export class DiscordBaseController extends BaseController {
+export class DiscordBaseContext extends BaseContext {
   readonly interaction: RequiredInteractions;
 
   constructor(interaction: RequiredInteractions) {
@@ -52,7 +52,7 @@ export class DiscordBaseController extends BaseController {
   }
 }
 
-export class DiscordNonModalController<AllowedInDMs extends boolean> extends DiscordBaseController {
+export class DiscordNonModalContext<AllowedInDMs extends boolean> extends DiscordBaseContext {
   override readonly interaction: PickNonModalInteraction<AllowedInDMs>;
 
   constructor(interaction: PickNonModalInteraction<AllowedInDMs>) {
@@ -65,7 +65,7 @@ export class DiscordNonModalController<AllowedInDMs extends boolean> extends Dis
   }
 }
 
-export class DiscordModalController<AllowedInDMs extends boolean> extends DiscordBaseController {
+export class DiscordModalContext<AllowedInDMs extends boolean> extends DiscordBaseContext {
   override readonly interaction: PickModalInteraction<AllowedInDMs>;
 
   constructor(interaction: PickModalInteraction<AllowedInDMs>) {
@@ -74,7 +74,7 @@ export class DiscordModalController<AllowedInDMs extends boolean> extends Discor
   }
 }
 
-export class DiscordButtonController<AllowedInDMs extends boolean> extends DiscordNonModalController<AllowedInDMs> {
+export class DiscordButtonContext<AllowedInDMs extends boolean> extends DiscordNonModalContext<AllowedInDMs> {
   override readonly interaction: PickButtonInteraction<AllowedInDMs>;
 
   constructor(interaction: PickButtonInteraction<AllowedInDMs>) {
@@ -83,7 +83,7 @@ export class DiscordButtonController<AllowedInDMs extends boolean> extends Disco
   }
 }
 
-export class DiscordCommandController<AllowedInDMs extends boolean> extends DiscordNonModalController<AllowedInDMs> {
+export class DiscordCommandContext<AllowedInDMs extends boolean> extends DiscordNonModalContext<AllowedInDMs> {
   override readonly interaction: PickCommandInteraction<AllowedInDMs>;
 
   constructor(interaction: PickCommandInteraction<AllowedInDMs>) {

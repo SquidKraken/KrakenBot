@@ -1,13 +1,13 @@
 import type { InteractionResponse, ModalBuilder } from "discord.js";
 
-import type { DiscordModalController } from "../controllers/DiscordController.js";
+import type { DiscordModalContext } from "../contexts/DiscordContext.js";
 import type { KrakenBot } from "../structures/KrakenBot.js";
 
 export interface ModalTemplate<ModalName extends string = string, AllowedInDMs extends boolean = boolean> {
   readonly name: ModalName;
   readonly allowInDMs: AllowedInDMs;
   readonly modal: ModalBuilder;
-  run(bot: KrakenBot, controller: DiscordModalController<AllowedInDMs>): Promise<InteractionResponse | void>;
+  run(bot: KrakenBot, context: DiscordModalContext<AllowedInDMs>): Promise<InteractionResponse | void>;
 }
 
 export function createModal<ModalName extends string, AllowedInDMs extends boolean>(

@@ -1,7 +1,7 @@
 /* eslint-disable class-methods-use-this */
 import type { ChatUserstate, Client as TMIClient } from "tmi.js";
-import type { RequiredMessageOptions, RequiredReplyOptions, SayReturnType } from "./BaseController.js";
-import { BaseController, BaseFormatter } from "./BaseController.js";
+import type { RequiredMessageOptions, RequiredReplyOptions, SayReturnType } from "./BaseContext.js";
+import { BaseContext, BaseFormatter } from "./BaseContext.js";
 import { isNullish } from "../utilities/nullishAssertion.js";
 
 class TwitchFormatter extends BaseFormatter {
@@ -12,7 +12,7 @@ class TwitchFormatter extends BaseFormatter {
   }
 }
 
-export class TwitchController extends BaseController {
+export class TwitchContext extends BaseContext {
   readonly client: TMIClient;
   readonly channel: string;
   readonly userstate: ChatUserstate;

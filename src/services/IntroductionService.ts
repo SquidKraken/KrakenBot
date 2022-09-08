@@ -1,7 +1,7 @@
 import type { Message, TextBasedChannel } from "discord.js";
 import { EmbedBuilder } from "discord.js";
 
-import type { DiscordNonModalController } from "../controllers/DiscordController.js";
+import type { DiscordNonModalContext } from "../contexts/DiscordContext.js";
 import type introductionModalData from "../listeners/interaction/modals/introduction.js";
 import type { KrakenBot } from "../structures/KrakenBot.js";
 import type { ServiceResponse } from "../utilities/ServiceResponse.js";
@@ -38,7 +38,7 @@ function generateIntroductionEmbed({
  * Manages Receiving and Posting introduction messages
  *
  * Two types of methods:
- * - Possessive: Require controller to manage user interface
+ * - Possessive: Require context to manage user interface
  * - Implicit: Require raw data to produce side-effect
  */
 export class IntroductionService {
@@ -62,8 +62,8 @@ export class IntroductionService {
     return new ServiceData(introductionChannel);
   }
 
-  async requestDetailsUsing(controller: DiscordNonModalController<false>): Promise<void> {
-    return controller.showModal(this.introductionModal);
+  async requestDetailsUsing(context: DiscordNonModalContext<false>): Promise<void> {
+    return context.showModal(this.introductionModal);
   }
 
   async postDetails(introductionDetails: IntroductionDetails): Promise<ServiceResponse<Message>> {

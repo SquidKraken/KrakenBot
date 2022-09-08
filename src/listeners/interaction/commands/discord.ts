@@ -11,10 +11,10 @@ const discordCommand = createCommand({
     twitch: true
   },
   options: [],
-  async run(_bot, controller) {
-    const content = controller.formatter.hyperlink("Squid's Discord Server", DISCORD_INVITE, "dictionary");
+  async run(_bot, context) {
+    const content = context.formatter.hyperlink("Squid's Discord Server", DISCORD_INVITE, "dictionary");
 
-    return controller.reply(content);
+    return context.reply(content);
   }
 });
 

@@ -10,7 +10,7 @@ export abstract class BaseFormatter {
   abstract hyperlink(text: string, url: `https://${string}`, nameFormat: "bracket" | "dictionary"): string;
 }
 
-export abstract class BaseController {
+export abstract class BaseContext {
   readonly formatter: BaseFormatter;
 
   constructor(formatter: BaseFormatter) {

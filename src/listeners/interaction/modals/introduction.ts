@@ -40,8 +40,8 @@ const introductionModalData = createModal({
   name: "introduction",
   allowInDMs: false,
   modal: introductionModal,
-  async run(bot, controller) {
-    const { interaction: { user, fields, member } } = controller;
+  async run(bot, context) {
+    const { interaction: { user, fields, member } } = context;
     const introductionDetails = {
       name: user.username,
       iconURL: user.avatarURL()!,
@@ -52,12 +52,12 @@ const introductionModalData = createModal({
     };
 
     const gatekeepResponse = await bot.services.gatekeep.allowAccessToRoles(member);
-    if (gatekeepResponse.errored) return controller.error(gatekeepResponse.message);
+    if (gatekeepResponse.errored) return context.error(gatekeepResponse.message);
 
     const introductionResponse = await bot.services.introduction.postDetails(introductionDetails);
-    if (introductionResponse.errored) return controller.error(introductionResponse.message);
+    if (introductionResponse.errored) return context.error(introductionResponse.message);
 
-    return controller.reply({
+    return context.reply({
       content: `Thank you for letting us know about yourself! Grab yourself some roles from <#${ROLES_CHANNEL_ID}> to get access to the rest of the server.`,
       ephemeral: true
     });

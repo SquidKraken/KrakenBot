@@ -10,8 +10,8 @@ const pingCommand = createCommand({
     twitch: true
   },
   options: [],
-  async run(_bot, controller) {
-    return controller.reply("Pong!");
+  async run(_bot, context) {
+    return context.reply("Pong!");
   }
 });
 

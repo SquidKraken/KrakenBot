@@ -1,9 +1,9 @@
 import type { ApplicationCommandOptionType } from "discord-api-types/v9";
 import type { CommandInteraction, CommandInteractionOption } from "discord.js";
 import type { KrakenBot } from "../structures/KrakenBot.js";
-import type { BaseController } from "../controllers/BaseController.js";
-import type { DiscordCommandController } from "../controllers/DiscordController.js";
-import type { TwitchController } from "../controllers/TwitchController.js";
+import type { BaseContext } from "../contexts/BaseContext.js";
+import type { DiscordCommandContext } from "../contexts/DiscordContext.js";
+import type { TwitchContext } from "../contexts/TwitchContext.js";
 
 interface CommandOptionAccessors {
   getSubcommand(required?: true): string;
@@ -102,10 +102,10 @@ interface BothCompatible {
 }
 
 type CommandCompatibility = BothCompatible | OnlyDiscordCompatible | OnlyTwitchCompatible;
-type PickCompatibleController<GivenCompatibility extends CommandCompatibility, AllowedInDMs extends boolean> = (
-  GivenCompatibility extends BothCompatible ? BaseController : (
-    GivenCompatibility extends OnlyDiscordCompatible ? DiscordCommandController<AllowedInDMs> : (
-      GivenCompatibility extends OnlyTwitchCompatible ? TwitchController : never
+type PickCompatibleContext<GivenCompatibility extends CommandCompatibility, AllowedInDMs extends boolean> = (
+  GivenCompatibility extends BothCompatible ? BaseContext : (
+    GivenCompatibility extends OnlyDiscordCompatible ? DiscordCommandContext<AllowedInDMs> : (
+      GivenCompatibility extends OnlyTwitchCompatible ? TwitchContext : never
     )
   )
 );
@@ -124,7 +124,7 @@ export interface CommandTemplate<
   readonly options: GivenOptions;
   run(
     client: KrakenBot,
-    controller: PickCompatibleController<GivenCompatibility, AllowedInDMs>
+    context: PickCompatibleContext<GivenCompatibility, AllowedInDMs>
   ): Promise<unknown>;
 }
 

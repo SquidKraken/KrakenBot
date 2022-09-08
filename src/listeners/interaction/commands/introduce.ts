@@ -10,8 +10,8 @@ const introduceCommand = createCommand({
     twitch: false
   },
   options: [],
-  async run(bot, controller) {
-    return bot.services.introduction.requestDetailsUsing(controller);
+  async run(bot, context) {
+    return bot.services.introduction.requestDetailsUsing(context);
   }
 });
 
