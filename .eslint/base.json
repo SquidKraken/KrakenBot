@@ -101,7 +101,7 @@
     }],
     "consistent-this": [ "error", "self" ],
     "constructor-super": "error",
-    "curly": [ "error", "multi" ],
+    "curly": [ "off", "multi" ],
     "default-case": [ "error", {
       "commentPattern": "^no\\sdefault"
     }],
@@ -214,8 +214,8 @@
     "max-classes-per-file": [ "error", 3 ],
     "max-depth": [ "error", 4 ],
     "max-len": [ "error", {
-      "code": 120,
-      "comments": 120,
+      "code": 130,
+      "comments": 130,
       "tabWidth": 2,
       "ignoreComments": false,
       "ignoreRegExpLiterals": false,
@@ -237,7 +237,7 @@
       "IIFEs": true
     }],
     "max-nested-callbacks": [ "error", 3 ],
-    "max-params": [ "error", 4 ],
+    "max-params": [ "error", 5 ],
     "max-statements": [ "error", 10, {
       "ignoreTopLevelFunctions": false
     }],

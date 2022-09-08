@@ -1,8 +1,9 @@
 import type { ApplicationCommandOptionType } from "discord-api-types/v9";
-import type {
-  ApplicationCommandOptionChoiceData, CommandInteraction, CommandInteractionOption, InteractionResponse, Message
-} from "discord.js";
-import type { KrakenBot } from "./KrakenBot.js";
+import type { CommandInteraction, CommandInteractionOption } from "discord.js";
+import type { KrakenBot } from "../structures/KrakenBot.js";
+import type { BaseController } from "../controllers/BaseController.js";
+import type { DiscordCommandController } from "../controllers/DiscordController.js";
+import type { TwitchController } from "../controllers/TwitchController.js";
 
 interface CommandOptionAccessors {
   getSubcommand(required?: true): string;
@@ -33,10 +34,6 @@ interface CommandOptionAccessors {
     name: string,
     required?: boolean,
   ): NonNullable<CommandInteractionOption["member" | "role" | "user"]> | null;
-  getMessage(name: string, required: true): NonNullable<CommandInteractionOption["message"]>;
-  getMessage(name: string, required?: boolean): NonNullable<CommandInteractionOption["message"]> | null;
-  getFocused(getFull: true): ApplicationCommandOptionChoiceData;
-  getFocused(getFull?: boolean): number | string;
   getAttachment(name: string, required: true): NonNullable<CommandInteractionOption["attachment"]>;
   getAttachment(
     name: string,
@@ -89,37 +86,74 @@ export type ContexedCommandInteraction<GivenOptions extends readonly CommandOpti
   options: OverridenOptionAccessors<GivenOptions>;
 };
 
-export interface SlashCommandStructure<TypeofOptions extends readonly CommandOption[] = readonly CommandOption[]> {
-  readonly options: TypeofOptions;
+interface OnlyTwitchCompatible {
+  discord: false;
+  twitch: true;
+}
+
+interface OnlyDiscordCompatible {
+  discord: true;
+  twitch: false;
+}
+
+interface BothCompatible {
+  discord: true;
+  twitch: true;
+}
+
+type CommandCompatibility = BothCompatible | OnlyDiscordCompatible | OnlyTwitchCompatible;
+type PickCompatibleController<GivenCompatibility extends CommandCompatibility> = (
+  GivenCompatibility extends BothCompatible ? BaseController : (
+    GivenCompatibility extends OnlyDiscordCompatible ? DiscordCommandController : (
+      GivenCompatibility extends OnlyTwitchCompatible ? TwitchController : never
+    )
+  )
+);
+
+// Contexted command interaction: ContexedCommandInteraction<GivenOptions>
+export interface CommandTemplate<
+  GivenCompatibility extends CommandCompatibility = CommandCompatibility,
+  GivenOptions extends ReadonlyCommandOptions = ReadonlyCommandOptions
+> {
   readonly name: string;
   readonly description: string;
   readonly allowInDMs: boolean;
   readonly guildPermissions: bigint;
+  readonly compatibility: GivenOptions[0] extends undefined ? GivenCompatibility : { discord: true; twitch: false; };
+  readonly options: GivenOptions;
   run(
     client: KrakenBot,
-    interaction: ContexedCommandInteraction<TypeofOptions>
-  // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
-  ): Promise<InteractionResponse | Message | void>;
+    controller: PickCompatibleController<GivenCompatibility>
+  ): Promise<unknown>;
 }
 
-export interface TransformedSlashCommandStructure<TypeofOptions extends readonly CommandOption[]> {
-  readonly options: TypeofOptions;
+export interface DiscordCommandTemplate<
+  GivenOptions extends ReadonlyCommandOptions = ReadonlyCommandOptions
+> {
   readonly name: string;
   readonly description: string;
   // eslint-disable-next-line @typescript-eslint/naming-convention
   readonly dm_permissions: boolean;
   // eslint-disable-next-line @typescript-eslint/naming-convention
   readonly default_member_permissions: string;
-  run(
-    client: KrakenBot,
-    interaction: ContexedCommandInteraction<TypeofOptions>
-  // eslint-disable-next-line @typescript-eslint/no-invalid-void-type
-  ): Promise<InteractionResponse | Message | void>;
+  readonly options: GivenOptions;
 }
 
-export function createSlashCommand<TypeofOptions extends readonly CommandOption[]>(
-  commandStructure: SlashCommandStructure<TypeofOptions>
-): TransformedSlashCommandStructure<TypeofOptions> {
+export function createCommand<
+  GivenCompatibility extends CommandCompatibility,
+  GivenOptions extends ReadonlyCommandOptions
+>(
+  commandStructure: CommandTemplate<GivenCompatibility, GivenOptions>
+): CommandTemplate<GivenCompatibility, GivenOptions> {
+  return commandStructure;
+}
+
+export function transformToDiscordCommand<
+  GivenCompatibility extends CommandCompatibility,
+  GivenOptions extends ReadonlyCommandOptions
+>(
+  commandStructure: CommandTemplate<GivenCompatibility, GivenOptions>
+): DiscordCommandTemplate {
   return {
     options: commandStructure.options,
     name: commandStructure.name,
@@ -127,8 +161,7 @@ export function createSlashCommand<TypeofOptions extends readonly CommandOption[
     // eslint-disable-next-line @typescript-eslint/naming-convention, camelcase
     dm_permissions: commandStructure.allowInDMs,
     // eslint-disable-next-line @typescript-eslint/naming-convention, camelcase
-    default_member_permissions: commandStructure.guildPermissions.toString(),
-    run: commandStructure.run.bind(commandStructure)
+    default_member_permissions: commandStructure.guildPermissions.toString()
   };
 }
 

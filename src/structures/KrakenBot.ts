@@ -1,55 +1,68 @@
-import { REST } from "@discordjs/rest";
-import { Client, GatewayIntentBits } from "discord.js";
-import { ButtonHandler } from "../handlers/ButtonHandler.js";
-import { ClientHandler } from "../handlers/ClientHandler.js";
-import { CommandHandler } from "../handlers/CommandHandler.js";
-import { ModalHandler } from "../handlers/ModalHandler.js";
+import type { Options } from "tmi.js";
+import { Client as DJSClient } from "discord.js";
+import { Client as TMIClient } from "tmi.js";
 
-const BOT_CONFIG = {
-  intents: [
-    GatewayIntentBits.Guilds,
-    GatewayIntentBits.GuildMembers,
-    GatewayIntentBits.GuildMessages,
-    GatewayIntentBits.GuildMessageReactions,
-    GatewayIntentBits.GuildIntegrations,
-    GatewayIntentBits.GuildEmojisAndStickers,
-    GatewayIntentBits.GuildBans,
-    GatewayIntentBits.GuildWebhooks,
-    GatewayIntentBits.DirectMessages,
-    GatewayIntentBits.DirectMessageReactions
-  ]
-};
+import { DISCORD_BOT_CONFIG, TWITCH_BOT_CONFIG } from "../config.js";
+import { DiscordClient } from "../handlers/client/DiscordClient.js";
+import { TwitchClient } from "../handlers/client/TwitchClient.js";
+import { ButtonHandler } from "../handlers/interaction/ButtonHandler.js";
+import { CommandHandler } from "../handlers/interaction/CommandHandler.js";
+import { ModalHandler } from "../handlers/interaction/ModalHandler.js";
 
-class BotHandlers {
-  readonly button: ButtonHandler;
-  readonly client: ClientHandler;
-  readonly command: CommandHandler;
-  readonly modal: ModalHandler;
-  readonly rest: REST;
+class BotClients {
+  readonly discord: DiscordClient;
+  readonly twitch: TwitchClient;
 
-  constructor(bot: KrakenBot, botToken: string) {
-    this.button = new ButtonHandler(bot);
-    this.client = new ClientHandler(bot);
-    this.command = new CommandHandler(bot);
-    this.modal = new ModalHandler(bot);
-    this.rest = new REST({ version: "9" }).setToken(botToken);
+  constructor(bot: KrakenBot, discordBotToken: string, discordBotApplicationID: string, twitchCredentials: Options["identity"]) {
+    const djsClient = new DJSClient(DISCORD_BOT_CONFIG);
+    const tmiClient = new TMIClient({
+      ...TWITCH_BOT_CONFIG,
+      identity: twitchCredentials
+    });
+
+    this.discord = new DiscordClient(bot, djsClient, discordBotToken, discordBotApplicationID);
+    this.twitch = new TwitchClient(bot, tmiClient);
   }
 
-  async loadAndRegisterAll(): Promise<void> {
+  async instantiateAll(): Promise<void> {
+    await this.discord.loadAndRegisterListeners();
+    await this.twitch.loadAndRegisterListeners();
+  }
+}
+
+class BotInteractions {
+  readonly button: ButtonHandler;
+  readonly command: CommandHandler;
+  readonly modal: ModalHandler;
+
+  constructor(bot: KrakenBot) {
+    this.button = new ButtonHandler(bot);
+    this.command = new CommandHandler(bot);
+    this.modal = new ModalHandler(bot);
+  }
+
+  async instantiateAll(): Promise<void> {
     await this.button.loadAndRegisterListeners();
-    await this.client.loadAndRegisterListeners();
     await this.command.loadAndRegisterListeners();
     await this.modal.loadAndRegisterListeners();
   }
 }
 
 export class KrakenBot {
-  readonly applicationID: string;
-  readonly client = new Client(BOT_CONFIG);
-  readonly handlers: BotHandlers;
+  readonly clients: BotClients;
+  readonly interactions: BotInteractions;
 
-  constructor(botToken: string, applicationID: string) {
-    this.applicationID = applicationID;
-    this.handlers = new BotHandlers(this, botToken);
+  constructor(discordBotToken: string, discordApplicationID: string, twitchCredentials: Options["identity"]) {
+    this.clients = new BotClients(this, discordBotToken, discordApplicationID, twitchCredentials);
+    this.interactions = new BotInteractions(this);
+  }
+
+  async login(discordToken: string): Promise<KrakenBot> {
+    await this.clients.instantiateAll();
+    await this.interactions.instantiateAll();
+    await this.clients.discord.emitter.login(discordToken);
+    await this.clients.twitch.emitter.client.connect();
+
+    return this;
   }
 }

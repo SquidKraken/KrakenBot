@@ -1,13 +1,9 @@
-/* eslint-disable node/no-process-env */
 import "dotenv/config";
-import { login as loginBot } from "./bot.js";
+import { KrakenBot } from "./structures/KrakenBot.js";
 import { startKrakenServer } from "./server.js";
-import { isNullish } from "./utilities/nullishAssertion.js";
+import { DISCORD_BOT_APPLICATION_ID, DISCORD_BOT_TOKEN, TWITCH_BOT_CREDENTIALS } from "./config.js";
 
-const botToken = process.env.BOT_TOKEN;
-const botApplicationID = process.env.BOT_APPLICATION_ID;
-if (isNullish(botToken)) throw new Error("Bot token not found!");
-if (isNullish(botApplicationID)) throw new Error("Bot application ID not found!");
+const bot = new KrakenBot(DISCORD_BOT_TOKEN, DISCORD_BOT_APPLICATION_ID, TWITCH_BOT_CREDENTIALS);
+await bot.login(DISCORD_BOT_TOKEN);
 
-await loginBot(botToken, botApplicationID);
 startKrakenServer();

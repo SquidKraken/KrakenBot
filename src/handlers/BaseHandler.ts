@@ -1,34 +1,53 @@
 import EventEmitter from "node:events";
-import { readdir } from "node:fs/promises";
 import path from "node:path";
+import { readdir } from "node:fs/promises";
 
 import type { KrakenBot } from "../structures/KrakenBot.js";
-import type { ButtonStructure } from "../structures/ButtonStructure.js";
-import type { ClientListenerStructure } from "../structures/ClientListener.js";
-import type { SlashCommandStructure } from "../structures/SlashCommand.js";
-import type { ModalStructure } from "../structures/ModalStructure.js";
+import type { ButtonTemplate } from "../templates/ButtonTemplate.js";
+import type { CommandTemplate } from "../templates/CommandTemplate.js";
+import type { DiscordTemplate } from "../templates/DiscordTemplate.js";
+import type { ModalTemplate } from "../templates/ModalTemplate.js";
+import type { TwitchTemplate } from "../templates/TwitchTemplate.js";
 
-interface ListenerStructures {
-  buttons: ButtonStructure;
-  client: ClientListenerStructure;
-  commands: SlashCommandStructure;
-  modals: ModalStructure;
+interface ClientListenerTemplates {
+  discord: DiscordTemplate;
+  twitch: TwitchTemplate;
 }
 
+interface InteractionListenerTemplates {
+  buttons: ButtonTemplate;
+  commands: CommandTemplate;
+  modals: ModalTemplate;
+}
+
+type ListenerStructures = ClientListenerTemplates & InteractionListenerTemplates;
+
+type ClientListenerNames = keyof ClientListenerTemplates;
+type InteractionListenerNames = keyof InteractionListenerTemplates;
 type ListenerNames = keyof ListenerStructures;
 
-export abstract class BaseHandler<ListenerName extends ListenerNames> {
+export type BaseEventEmitter = Pick<EventEmitter, "emit" | "on" | "removeAllListeners">;
+
+const listenerType: Record<ClientListenerNames | InteractionListenerNames, "client" | "interaction"> = {
+  buttons: "interaction",
+  commands: "interaction",
+  discord: "client",
+  modals: "interaction",
+  twitch: "client"
+};
+
+abstract class BaseHandler<ListenerName extends ListenerNames> {
   #listenerName: ListenerName;
   #listenerDirectory: string;
   readonly bot: KrakenBot;
-  readonly emitter: EventEmitter;
+  readonly emitter: BaseEventEmitter = new EventEmitter();
   readonly listeners = new Map<string, ListenerStructures[ListenerName]>();
 
   constructor(bot: KrakenBot, listenerToHandle: ListenerName) {
+    const listenerTypeDirectory = `dist/listeners/${listenerType[listenerToHandle]}`;
     this.#listenerName = listenerToHandle;
-    this.#listenerDirectory = path.join(process.cwd(), "dist/listeners/", this.#listenerName);
+    this.#listenerDirectory = path.join(process.cwd(), listenerTypeDirectory, this.#listenerName);
     this.bot = bot;
-    this.emitter = new EventEmitter();
   }
 
   async fetchListenerFilenames(): Promise<string[]> {
@@ -46,8 +65,7 @@ export abstract class BaseHandler<ListenerName extends ListenerNames> {
       const listenerName = listenerFilename.split(".")[0]!;
       const listenerPath = path.join(this.#listenerDirectory, listenerFilename);
 
-      // eslint-disable-next-line quote-props
-      const { default: listenerData } = await import(listenerPath) as { default: ListenerStructures[ListenerName]; };
+      const { "default": listenerData } = await import(listenerPath) as { default: ListenerStructures[ListenerName]; };
       if (this.listeners.has(listenerName)) this.unloadListener(listenerName);
 
       this.listeners.set(listenerName, listenerData);
@@ -69,3 +87,6 @@ export abstract class BaseHandler<ListenerName extends ListenerNames> {
 
   abstract registerListeners(): Promise<void> | void;
 }
+
+export abstract class ClientHandler<ListenerName extends ClientListenerNames> extends BaseHandler<ListenerName> {}
+export abstract class InteractionHandler<ListenerName extends InteractionListenerNames> extends BaseHandler<ListenerName> {}
