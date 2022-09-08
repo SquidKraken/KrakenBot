@@ -12,14 +12,14 @@ const introductionButton = new ButtonBuilder()
 const introductionButtonData = createButton({
   name: "introduction",
   button: introductionButton,
-  async run(bot, interaction) {
+  async run(bot, controller) {
     const introductionModal = bot.interactions.modal.listeners.get("introduction")?.modal;
-    if (isNullish(introductionModal) || isNullish(interaction.guild)) return interaction.reply({
+    if (isNullish(introductionModal)) return controller.reply({
       content: "Something went wrong!",
       ephemeral: true
     });
 
-    return interaction.showModal(introductionModal);
+    return controller.showModal(introductionModal);
   }
 });
 

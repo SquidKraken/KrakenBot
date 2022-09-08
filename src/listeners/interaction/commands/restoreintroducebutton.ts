@@ -14,17 +14,9 @@ const restoreIntroduceButtonCommand = createCommand({
     twitch: false
   },
   options: [],
-  // eslint-disable-next-line max-lines-per-function
   async run(bot, controller) {
     const introductionButton = bot.interactions.button.listeners.get("introduction")?.button;
-    if (isNullish(introductionButton)) return controller.reply({
-      content: "Could not find the Introduction button data!",
-      ephemeral: true
-    });
-    if (isNullish(controller.interaction.channel)) return controller.reply({
-      content: "Could not access current channel!",
-      ephemeral: true
-    });
+    if (isNullish(introductionButton)) return controller.error("Could not find the Introduction button data!");
 
     await controller.deferReply({ ephemeral: true });
 
@@ -39,10 +31,7 @@ const restoreIntroduceButtonCommand = createCommand({
     } catch (sendError: unknown) {
       console.error(sendError);
 
-      return controller.reply({
-        content: "Could not find the Introduction button data!",
-        ephemeral: true
-      });
+      return controller.error("Could not set up the Introduction button!");
     }
 
     return controller.editReply("Successfully set up the Introduction button!");

@@ -20,10 +20,7 @@ const sayCommand = createCommand({
   ] as const,
   async run(_bot, controller) {
     const textToSay = controller.interaction.options.getString("text");
-    if (isNullish(textToSay)) return controller.reply({
-      content: "You have not provided anything for me to say!",
-      ephemeral: true
-    });
+    if (isNullish(textToSay)) return controller.error("You have not provided anything for me to say!");
 
     return controller.reply(textToSay);
   }

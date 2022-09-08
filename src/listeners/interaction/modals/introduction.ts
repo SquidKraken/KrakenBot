@@ -1,4 +1,4 @@
-import type { ModalActionRowComponentBuilder } from "discord.js";
+import type { ModalActionRowComponentBuilder, ModalSubmitInteraction } from "discord.js";
 import {
   TextChannel, ActionRowBuilder, EmbedBuilder, ModalBuilder, TextInputBuilder, TextInputStyle
 } from "discord.js";
@@ -7,6 +7,24 @@ import { ACCESS_ROLE_ID, INTRODUCTION_CHANNEL_ID, ROLES_CHANNEL_ID } from "../..
 import { createModal } from "../../../templates/ModalTemplate.js";
 import { isNullish } from "../../../utilities/nullishAssertion.js";
 
+function generateIntroductionEmbed({ fields, user }: ModalSubmitInteraction): EmbedBuilder {
+  const aboutUser = fields.getTextInputValue("aboutInput");
+  const userAge = fields.getTextInputValue("ageInput");
+  const userPronouns = fields.getTextInputValue("pronounsInput");
+  const userHobbies = fields.getTextInputValue("hobbiesInput");
+
+  return new EmbedBuilder()
+    .setAuthor({
+      name: user.username,
+      iconURL: user.avatarURL()!
+    })
+    .setDescription([
+      `🙋 **About Me:** ${aboutUser}`,
+      `🧙 **My Age:** ${userAge}`,
+      `❔ **My Pronouns**: ${userPronouns}`,
+      `⚽ **My Hobbies:** ${userHobbies}`
+    ].join("\n"));
+}
 const aboutInput = new TextInputBuilder()
   .setCustomId("aboutInput")
   .setLabel("🙋 Tell us a bit about yourself!")
@@ -40,48 +58,25 @@ const introductionModal = new ModalBuilder()
 const modalData = createModal({
   name: "introduction",
   modal: introductionModal,
-  // eslint-disable-next-line max-lines-per-function, max-statements
-  async run(_bot, interaction) {
-    const introductionChannel = await interaction.guild?.channels.fetch(INTRODUCTION_CHANNEL_ID);
-    if (isNullish(introductionChannel) || !(introductionChannel instanceof TextChannel)) return interaction.reply({
-      content: "Could not find the interaction channel!",
-      ephemeral: true
-    });
-    if (isNullish(interaction.member)) return;
+  // eslint-disable-next-line max-statements
+  async run(_bot, controller) {
+    const interactionMemberRoles = controller.interaction.member?.roles;
+    const introductionChannel = await controller.interaction.guild?.channels.fetch(INTRODUCTION_CHANNEL_ID);
+    if (isNullish(introductionChannel) || !(introductionChannel instanceof TextChannel)) return controller.error("I could not find the introduction channel!");
+    if (isNullish(interactionMemberRoles)) return controller.error("I could not fetch member data!");
 
-    const aboutUser = interaction.fields.getTextInputValue("aboutInput");
-    const userAge = interaction.fields.getTextInputValue("ageInput");
-    const userPronouns = interaction.fields.getTextInputValue("pronounsInput");
-    const userHobbies = interaction.fields.getTextInputValue("hobbiesInput");
-    const embedToSend = new EmbedBuilder()
-      .setAuthor({
-        name: interaction.user.username,
-        iconURL: interaction.user.avatarURL()!
-      })
-      .setDescription([
-        `🙋 **About Me:** ${aboutUser}`,
-        `🧙 **My Age:** ${userAge}`,
-        `❔ **My Pronouns**: ${userPronouns}`,
-        `⚽ **My Hobbies:** ${userHobbies}`
-      ].join("\n"));
-
-    if (Array.isArray(interaction.member.roles)) return interaction.reply({
-      content: "An unexpected error occured. Please try again.",
-      ephemeral: true
-    });
+    const embedToSend = generateIntroductionEmbed(controller.interaction);
+    if (Array.isArray(interactionMemberRoles)) return controller.error("An unexpected error occured. Please try again.");
 
     try {
-      await interaction.member.roles.add(ACCESS_ROLE_ID);
+      await interactionMemberRoles.add(ACCESS_ROLE_ID);
     } catch {
-      return interaction.reply({
-        content: "An unexpected error occured. Please try again.",
-        ephemeral: true
-      });
+      return controller.error("I was unable to give you the required roles!");
     }
 
     await introductionChannel.send({ embeds: [ embedToSend ] });
 
-    return interaction.reply({
+    return controller.reply({
       content: `Thank you for letting us know about yourself! Grab yourself some roles from <#${ROLES_CHANNEL_ID}> to get access to the rest of the server.`,
       ephemeral: true
     });

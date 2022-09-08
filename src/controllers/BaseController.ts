@@ -24,4 +24,8 @@ export abstract class BaseController {
   abstract send(
     _options: MessagePayload | RequiredMessageOptions | string
   ): Promise<Message | SayReturnType | void>;
+
+  abstract error(
+    _options: string
+  ): Promise<InteractionResponse | SayReturnType | void>;
 }

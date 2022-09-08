@@ -13,10 +13,7 @@ const introduceCommand = createCommand({
   options: [],
   async run(bot, controller) {
     const introductionModal = bot.interactions.modal.listeners.get("introduction")?.modal;
-    if (isNullish(introductionModal) || isNullish(controller.interaction.guild)) return controller.reply({
-      content: "I could not run this command!",
-      ephemeral: true
-    });
+    if (isNullish(introductionModal)) return controller.error("I could not run this command!");
 
     return controller.showModal(introductionModal);
   }

@@ -45,4 +45,11 @@ export class TwitchController extends BaseController {
       ? this.client.whisper(username, content)
       : this.client.say(this.channel, `${username} ${content}`);
   }
+
+  override async error(errorMessage: string): Promise<SayReturnType | void> {
+    return this.reply({
+      content: errorMessage,
+      ephemeral: true
+    });
+  }
 }

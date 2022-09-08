@@ -2,7 +2,7 @@ import type { ApplicationCommandOptionType } from "discord-api-types/v9";
 import type { CommandInteraction, CommandInteractionOption } from "discord.js";
 import type { KrakenBot } from "../structures/KrakenBot.js";
 import type { BaseController } from "../controllers/BaseController.js";
-import type { DiscordController } from "../controllers/DiscordController.js";
+import type { DiscordCommandController } from "../controllers/DiscordController.js";
 import type { TwitchController } from "../controllers/TwitchController.js";
 
 interface CommandOptionAccessors {
@@ -104,7 +104,7 @@ interface BothCompatible {
 type CommandCompatibility = BothCompatible | OnlyDiscordCompatible | OnlyTwitchCompatible;
 type PickCompatibleController<GivenCompatibility extends CommandCompatibility> = (
   GivenCompatibility extends BothCompatible ? BaseController : (
-    GivenCompatibility extends OnlyDiscordCompatible ? DiscordController : (
+    GivenCompatibility extends OnlyDiscordCompatible ? DiscordCommandController : (
       GivenCompatibility extends OnlyTwitchCompatible ? TwitchController : never
     )
   )
