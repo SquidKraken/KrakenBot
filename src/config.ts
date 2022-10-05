@@ -70,7 +70,7 @@ export const TWITCH_LOGGER_CONFIG = {
 
 export const TWITCH_EVENTSUB_CONFIG = {
   hostName: BOT_SERVER_HOSTNAME,
-  pathPrefix: "/api/twitch/eventsub/",
+  pathPrefix: "/api/twitch/eventsub",
   usePathPrefixInHandlers: true,
   logger: {
     name: "Twitch EventSub",
