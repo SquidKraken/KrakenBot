@@ -82,6 +82,5 @@ export const TWITCH_EVENTSUB_CONFIG = {
 
 export const TWITCH_AUTH_PROVIDER_CONFIG = {
   clientID: TWITCH_BOT_CLIENT_ID,
-  clientSecret: TWITCH_BOT_SECRET,
-  scopes: [ "channel:moderate" ]
+  clientSecret: TWITCH_BOT_SECRET
 };
