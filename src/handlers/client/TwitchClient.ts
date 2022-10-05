@@ -124,7 +124,8 @@ export class TwitchClient {
     this.bot = bot;
     this.authProvider = new ClientCredentialsAuthProvider(
       TWITCH_AUTH_PROVIDER_CONFIG.clientID,
-      TWITCH_AUTH_PROVIDER_CONFIG.clientSecret
+      TWITCH_AUTH_PROVIDER_CONFIG.clientSecret,
+      TWITCH_AUTH_PROVIDER_CONFIG.scopes
     );
     this.api = new ApiClient({
       authProvider: this.authProvider,
