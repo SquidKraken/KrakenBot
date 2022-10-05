@@ -1,7 +1,7 @@
 import type { InteractionResponse, ModalBuilder } from "discord.js";
 
 import type { DiscordModalContext } from "../contexts/DiscordContext.js";
-import type { KrakenBot } from "../structures/KrakenBot.js";
+import type { KrakenBot } from "../KrakenBot.js";
 
 export interface ModalTemplate<ModalName extends string = string, AllowedInDMs extends boolean = boolean> {
   readonly name: ModalName;

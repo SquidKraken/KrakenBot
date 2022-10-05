@@ -1,6 +1,6 @@
 import type { ButtonBuilder, InteractionResponse } from "discord.js";
 import type { DiscordButtonContext } from "../contexts/DiscordContext.js";
-import type { KrakenBot } from "../structures/KrakenBot.js";
+import type { KrakenBot } from "../KrakenBot.js";
 
 export interface ButtonTemplate<ButtonName extends string = string, AllowedInDMs extends boolean = boolean> {
   readonly name: ButtonName;

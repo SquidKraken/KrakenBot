@@ -1,4 +1,4 @@
-import type { KrakenBot } from "../../structures/KrakenBot.js";
+import type { KrakenBot } from "../../KrakenBot.js";
 import { InteractionHandler } from "../BaseHandler.js";
 
 export class ModalHandler extends InteractionHandler<"modals"> {

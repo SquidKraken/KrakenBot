@@ -1,6 +1,6 @@
 import type { APIInteractionGuildMember, GuildMember } from "discord.js";
 
-import type { KrakenBot } from "../structures/KrakenBot.js";
+import type { KrakenBot } from "../KrakenBot.js";
 import type { ServiceResponse } from "../utilities/ServiceResponse.js";
 import { ServiceData, ServiceError } from "../utilities/ServiceResponse.js";
 import { ACCESS_ROLE_ID } from "../constants.js";

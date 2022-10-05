@@ -2,16 +2,18 @@ import EventEmitter from "node:events";
 import path from "node:path";
 import { readdir } from "node:fs/promises";
 
-import type { KrakenBot } from "../structures/KrakenBot.js";
+import type { KrakenBot } from "../KrakenBot.js";
 import type { ButtonTemplate } from "../types/ButtonTemplate.js";
 import type { CommandTemplate } from "../types/CommandTemplate.js";
 import type { DiscordTemplate } from "../types/DiscordTemplate.js";
 import type { ModalTemplate } from "../types/ModalTemplate.js";
 import type { TwitchTemplate } from "../types/TwitchTemplate.js";
+import type { EventSubTemplate } from "../types/EventSubTemplate.js";
 
 interface ClientListenerTemplates {
   discord: DiscordTemplate;
   twitch: TwitchTemplate;
+  eventsub: EventSubTemplate;
 }
 
 interface InteractionListenerTemplates {
@@ -32,6 +34,7 @@ const listenerType: Record<ClientListenerNames | InteractionListenerNames, "clie
   buttons: "interaction",
   commands: "interaction",
   discord: "client",
+  eventsub: "client",
   modals: "interaction",
   twitch: "client"
 };
@@ -60,16 +63,18 @@ abstract class BaseHandler<ListenerName extends ListenerNames> {
 
   async loadListeners(): Promise<BaseHandler<ListenerName>["listeners"]> {
     const listenerFilenames = await this.fetchListenerFilenames();
+    await Promise.all(
+      listenerFilenames
+        .map(async listenerFilename => {
+          const listenerName = listenerFilename.split(".")[0]!;
+          const listenerPath = path.join(this.#listenerDirectory, listenerFilename);
 
-    for await (const listenerFilename of listenerFilenames) {
-      const listenerName = listenerFilename.split(".")[0]!;
-      const listenerPath = path.join(this.#listenerDirectory, listenerFilename);
+          const { "default": listenerData } = await import(listenerPath) as { default: ListenerStructures[ ListenerName ]; };
+          if (this.listeners.has(listenerName)) this.unloadListener(listenerName);
 
-      const { "default": listenerData } = await import(listenerPath) as { default: ListenerStructures[ListenerName]; };
-      if (this.listeners.has(listenerName)) this.unloadListener(listenerName);
-
-      this.listeners.set(listenerName, listenerData);
-    }
+          this.listeners.set(listenerName, listenerData);
+        })
+    );
 
     return this.listeners;
   }

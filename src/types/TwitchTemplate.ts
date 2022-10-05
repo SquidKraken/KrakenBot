@@ -1,5 +1,5 @@
 import type { Client as TMIClient, Events } from "tmi.js";
-import type { KrakenBot } from "../structures/KrakenBot.js";
+import type { KrakenBot } from "../KrakenBot.js";
 
 type TwitchEventNames = keyof Events;
 

@@ -1,6 +1,6 @@
 import type { ApplicationCommandOptionType } from "discord-api-types/v9";
 import type { CommandInteraction, CommandInteractionOption } from "discord.js";
-import type { KrakenBot } from "../structures/KrakenBot.js";
+import type { KrakenBot } from "../KrakenBot.js";
 import type { BaseContext } from "../contexts/BaseContext.js";
 import type { DiscordCommandContext } from "../contexts/DiscordContext.js";
 import type { TwitchContext } from "../contexts/TwitchContext.js";
