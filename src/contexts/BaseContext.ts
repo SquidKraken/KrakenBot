@@ -1,9 +1,9 @@
 import type {
-  InteractionReplyOptions, InteractionResponse, Message, MessageOptions, MessagePayload
+  InteractionReplyOptions, InteractionResponse, Message, BaseMessageOptions, MessagePayload
 } from "discord.js";
 
 export type RequiredReplyOptions = InteractionReplyOptions & { content: string; };
-export type RequiredMessageOptions = MessageOptions & { content: string; };
+export type RequiredMessageOptions = BaseMessageOptions & { content: string; };
 export type SayReturnType = [ string ] | [ string, string ];
 
 export abstract class BaseFormatter {
