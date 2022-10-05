@@ -1,5 +1,5 @@
 import type {
-  ChannelManager, Message, MessageOptions, TextBasedChannel
+  ChannelManager, Message, BaseMessageOptions, TextBasedChannel
 } from "discord.js";
 import type { Client as TMIClient } from "tmi.js";
 import type { HelixGame, HelixStream, HelixUser } from "@twurple/api";
@@ -30,7 +30,7 @@ function generateStreamAnnouncementData(
   streamerData: HelixUser,
   streamData: HelixStream,
   gameData: HelixGame | null
-): Pick<MessageOptions, "components" | "embeds" | "files"> {
+): Pick<BaseMessageOptions, "components" | "embeds" | "files"> {
   const isGameMissing = isNullish(gameData);
   const gameText = isGameMissing ? "" : `\n\nWe're streaming ${bold(gameData.name)}!`;
   const timeText = `\n\n🟢 Started ${time(streamData.startDate, "R")}`;

@@ -1,7 +1,7 @@
 /* eslint-disable max-classes-per-file */
 /* eslint-disable class-methods-use-this */
 import type {
-  CommandInteraction, InteractionReplyOptions, InteractionResponse, Message, MessageOptions, MessagePayload
+  CommandInteraction, InteractionReplyOptions, InteractionResponse, Message, BaseMessageOptions, MessagePayload
 } from "discord.js";
 
 import type {
@@ -32,7 +32,7 @@ export class DiscordBaseContext extends BaseContext {
     return this.interaction.reply(options);
   }
 
-  override async send(options: MessageOptions | MessagePayload | string): Promise<Message | undefined> {
+  override async send(options: BaseMessageOptions | MessagePayload | string): Promise<Message | undefined> {
     return this.interaction.channel?.send(options);
   }
 
