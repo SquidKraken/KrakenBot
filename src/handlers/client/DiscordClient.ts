@@ -1,19 +1,22 @@
-import type { Client } from "discord.js";
-import { REST } from "discord.js";
+import { Client as DJSClient, REST } from "discord.js";
 
-import type { KrakenBot } from "../../structures/KrakenBot.js";
+import type { KrakenBot } from "../../KrakenBot.js";
 import { ClientHandler } from "../BaseHandler.js";
+import {
+  DISCORD_API_VERSION, DISCORD_BOT_APPLICATION_ID, DISCORD_BOT_CONFIG, DISCORD_BOT_TOKEN
+} from "../../config.js";
 
 export class DiscordClient extends ClientHandler<"discord"> {
-  override readonly emitter: Client;
+  override readonly emitter: DJSClient;
   readonly applicationID: string;
   readonly rest: REST;
 
-  constructor(bot: KrakenBot, discordClient: Client, discordToken: string, discordBotApplicationID: string) {
+  constructor(bot: KrakenBot) {
+    const discordClient = new DJSClient(DISCORD_BOT_CONFIG);
     super(bot, "discord");
     this.emitter = discordClient;
-    this.applicationID = discordBotApplicationID;
-    this.rest = new REST({ version: "9" }).setToken(discordToken);
+    this.applicationID = DISCORD_BOT_APPLICATION_ID;
+    this.rest = new REST({ version: DISCORD_API_VERSION }).setToken(DISCORD_BOT_TOKEN);
   }
 
   registerListeners(): void {

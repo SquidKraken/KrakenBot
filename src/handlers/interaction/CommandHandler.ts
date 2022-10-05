@@ -1,7 +1,7 @@
 import { Routes } from "discord-api-types/v9";
 
 import type { BaseContext } from "../../contexts/BaseContext.js";
-import type { KrakenBot } from "../../structures/KrakenBot.js";
+import type { KrakenBot } from "../../KrakenBot.js";
 import type { CommandTemplate, DiscordCommandTemplate } from "../../types/CommandTemplate.js";
 import { InteractionHandler } from "../BaseHandler.js";
 import { transformToDiscordCommand } from "../../types/CommandTemplate.js";

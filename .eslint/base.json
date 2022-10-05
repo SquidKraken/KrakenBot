@@ -137,7 +137,7 @@
     "grouped-accessor-pairs": [ "error", "getBeforeSet" ],
     "guard-for-in": "error",
     "id-denylist": [
-      "error", "data", "err", "e", "cb", "callback"
+      "error", "err", "e", "cb", "callback"
     ],
     "id-length": [ "error", {
       "min": 4,
@@ -211,7 +211,7 @@
     "lines-between-class-members": [ "error", "always", {
       "exceptAfterSingleLine": true
     }],
-    "max-classes-per-file": [ "error", 3 ],
+    "max-classes-per-file": [ "error", 5 ],
     "max-depth": [ "error", 4 ],
     "max-len": [ "error", {
       "code": 130,
@@ -640,7 +640,7 @@
       "enforceForRenamedProperties": false
     }],
     "prefer-exponentiation-operator": "error",
-    "prefer-named-capture-group": "error",
+    "prefer-named-capture-group": "off",
     "prefer-numeric-literals": "error",
     "prefer-object-has-own": "error",
     "prefer-object-spread": "error",

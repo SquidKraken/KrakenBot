@@ -3,7 +3,7 @@ import { EmbedBuilder } from "discord.js";
 
 import type { DiscordNonModalContext } from "../contexts/DiscordContext.js";
 import type introductionModalData from "../listeners/interaction/modals/introduction.js";
-import type { KrakenBot } from "../structures/KrakenBot.js";
+import type { KrakenBot } from "../KrakenBot.js";
 import type { ServiceResponse } from "../utilities/ServiceResponse.js";
 import { INTRODUCTION_CHANNEL_ID } from "../constants.js";
 import { isNullish } from "../utilities/nullishAssertion.js";

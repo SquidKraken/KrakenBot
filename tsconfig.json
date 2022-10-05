@@ -19,7 +19,7 @@
     "noEmitOnError": true,
     "sourceMap": true,
 
-    "downlevelIteration": true,
+    "downlevelIteration": false,
     "esModuleInterop": true,
     "importHelpers": true,
     "incremental": true,
