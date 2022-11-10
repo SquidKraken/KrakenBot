@@ -22,7 +22,7 @@ export const BOT_SERVER_HOSTNAME = process.env.NODE_ENV === "production"
   ? process.env.SERVER_HOSTNAME
   : `localhost`;
 
-export const DISCORD_API_VERSION = "9";
+export const DISCORD_API_VERSION = "10";
 export const DISCORD_BOT_TOKEN = process.env.DISCORD_BOT_TOKEN;
 export const DISCORD_BOT_APPLICATION_ID = process.env.DISCORD_BOT_APPLICATION_ID;
 export const DISCORD_BOT_CONFIG = {
