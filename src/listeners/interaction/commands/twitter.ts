@@ -1,4 +1,4 @@
-import { TWITTER_LINK } from "../../../constants.js";
+import { TWITTER_LINK } from "../../../config/constants.js";
 import { createCommand, PermissionFlags } from "../../../types/CommandTemplate.js";
 
 const discordCommand = createCommand({

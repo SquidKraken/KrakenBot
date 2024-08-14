@@ -1,4 +1,4 @@
-import { DISCORD_INVITE } from "../../../constants.js";
+import { DISCORD_INVITE } from "../../../config/constants.js";
 import { createCommand, PermissionFlags } from "../../../types/CommandTemplate.js";
 
 const discordCommand = createCommand({

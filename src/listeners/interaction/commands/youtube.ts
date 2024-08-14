@@ -1,4 +1,4 @@
-import { YOUTUBE_LINK } from "../../../constants.js";
+import { YOUTUBE_LINK } from "../../../config/constants.js";
 import { createCommand, PermissionFlags } from "../../../types/CommandTemplate.js";
 
 const discordCommand = createCommand({

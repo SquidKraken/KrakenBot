@@ -4,7 +4,7 @@ import type { KrakenBot } from "../../KrakenBot.js";
 import { ClientHandler } from "../BaseHandler.js";
 import {
   DISCORD_API_VERSION, DISCORD_BOT_APPLICATION_ID, DISCORD_BOT_CONFIG, DISCORD_BOT_TOKEN
-} from "../../config.js";
+} from "../../config/api.js";
 
 export class DiscordClient extends ClientHandler<"discord"> {
   override readonly emitter: DJSClient;

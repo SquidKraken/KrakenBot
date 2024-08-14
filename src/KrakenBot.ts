@@ -1,4 +1,4 @@
-import { DISCORD_BOT_TOKEN } from "./config.js";
+import { DISCORD_BOT_TOKEN } from "./config/api.js";
 import { DiscordClient } from "./handlers/client/DiscordClient.js";
 import { TwitchClient } from "./handlers/client/TwitchClient.js";
 import { ButtonHandler } from "./handlers/interaction/ButtonHandler.js";

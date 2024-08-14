@@ -5,7 +5,7 @@ import type { DiscordNonModalContext } from "../contexts/DiscordContext.js";
 import type introductionModalData from "../listeners/interaction/modals/introduction.js";
 import type { KrakenBot } from "../KrakenBot.js";
 import type { ServiceResponse } from "../utilities/ServiceResponse.js";
-import { INTRODUCTION_CHANNEL_ID } from "../constants.js";
+import { INTRODUCTION_CHANNEL_ID } from "../config/constants.js";
 import { isNullish } from "../utilities/nullishAssertion.js";
 import { ServiceData, ServiceError } from "../utilities/ServiceResponse.js";
 

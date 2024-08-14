@@ -3,7 +3,8 @@ import type { APIInteractionGuildMember, GuildMember } from "discord.js";
 import type { KrakenBot } from "../KrakenBot.js";
 import type { ServiceResponse } from "../utilities/ServiceResponse.js";
 import { ServiceData, ServiceError } from "../utilities/ServiceResponse.js";
-import { ACCESS_ROLE_ID } from "../constants.js";
+import { ACCESS_ROLE_ID } from "../config/constants.js";
+import { ERRORS } from "../config/messages.js";
 
 type APIGuildMember = APIInteractionGuildMember | GuildMember;
 
