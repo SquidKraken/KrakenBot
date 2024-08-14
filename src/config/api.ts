@@ -2,7 +2,7 @@
 import type { Options } from "tmi.js";
 import { GatewayIntentBits } from "discord.js";
 
-import { isNullish } from "./utilities/nullishAssertion.js";
+import { isNullish } from "../utilities/nullishAssertion.js";
 
 if (isNullish(process.env.HOST_USERNAME)) throw new Error("Missing Host username!");
 if (isNullish(process.env.HOST_TWITCH_ID)) throw new Error("Missing Host username!");

@@ -1,5 +1,5 @@
 /* eslint-disable node/no-process-env */
-import { isNullish } from "./utilities/nullishAssertion.js";
+import { isNullish } from "../utilities/nullishAssertion.js";
 
 if (isNullish(process.env.DISCORD_INVITE_CODE)) throw new Error("Missing Discord Invite code!");
 if (isNullish(process.env.HOST_USERNAME)) throw new Error("Missing Host username!");
