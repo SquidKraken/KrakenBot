@@ -9,7 +9,7 @@
     "checkJs": false,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "lib": [],
+    "lib": ["ES2022"],
 
     "composite": true,
     "declaration": true,
@@ -65,5 +65,8 @@
     "pretty": true,
     "exactOptionalPropertyTypes": true
   },
-  "include": [ "./src", "./tests" ]
+  "include": [ "./src", "./tests" ],
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  }
 }
