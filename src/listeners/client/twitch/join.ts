@@ -1,4 +1,4 @@
-import { createTwitchListener } from "../../../types/TwitchTemplate.js";
+import { createTwitchListener } from "../../../templates/TwitchTemplate.js";
 import { twitchLog } from "../../../utilities/logger.js";
 
 const twitchChannelJoin = createTwitchListener({

@@ -1,6 +1,7 @@
 import { ButtonBuilder, ButtonStyle } from "discord.js";
 
-import { createButton } from "../../../types/ButtonTemplate.js";
+import { createButton } from "../../../templates/ButtonTemplate.js";
+import { TEXTUAL_INDICATORS } from "../../../config/messages.js";
 
 const introductionButton = new ButtonBuilder()
   .setCustomId("introduction")

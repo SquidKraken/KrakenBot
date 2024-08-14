@@ -1,4 +1,5 @@
-import { CommandOptionType, createCommand, PermissionFlags } from "../../../types/CommandTemplate.js";
+import { COMMAND_DESCRIPTIONS, ERRORS } from "../../../config/messages.js";
+import { CommandOptionType, createCommand, PermissionFlags } from "../../../templates/CommandTemplate.js";
 import { isNullish } from "../../../utilities/nullishAssertion.js";
 
 const sayCommand = createCommand({

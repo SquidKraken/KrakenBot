@@ -1,4 +1,4 @@
-import { createEventSubListener } from "../../../types/EventSubTemplate.js";
+import { createEventSubListener } from "../../../templates/EventSubTemplate.js";
 import { twitchLog } from "../../../utilities/logger.js";
 
 const eventSubStreamOffline = createEventSubListener({

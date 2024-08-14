@@ -1,5 +1,5 @@
 import { TWITTER_LINK } from "../../../config/constants.js";
-import { createCommand, PermissionFlags } from "../../../types/CommandTemplate.js";
+import { createCommand, PermissionFlags } from "../../../templates/CommandTemplate.js";
 
 const discordCommand = createCommand({
   name: "twitter",

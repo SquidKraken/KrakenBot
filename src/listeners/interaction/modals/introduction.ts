@@ -4,7 +4,7 @@ import {
 } from "discord.js";
 
 import { ROLES_CHANNEL_ID } from "../../../constants.js";
-import { createModal } from "../../../types/ModalTemplate.js";
+import { createModal } from "../../../templates/ModalTemplate.js";
 
 const aboutInput = new TextInputBuilder()
   .setCustomId("aboutInput")

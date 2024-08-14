@@ -9,7 +9,8 @@ import { EventSubMiddleware } from "@twurple/eventsub";
 
 import type { KrakenBot } from "../../KrakenBot.js";
 import type { BaseEventEmitter } from "../BaseHandler.js";
-import type { EventSubEventMethods } from "../../types/EventSubTemplate.js";
+import type { EventSubEventMethods } from "../../templates/EventSubTemplate.js";
+import type { KrakenBot } from "../../KrakenBot.js";
 import { ClientHandler } from "../BaseHandler.js";
 import { isNullish } from "../../utilities/nullishAssertion.js";
 import { capitalize } from "../../utilities/capitalize.js";

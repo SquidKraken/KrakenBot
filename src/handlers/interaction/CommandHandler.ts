@@ -2,9 +2,9 @@ import { Routes } from "discord-api-types/v9";
 
 import type { BaseContext } from "../../contexts/BaseContext.js";
 import type { KrakenBot } from "../../KrakenBot.js";
-import type { CommandTemplate, DiscordCommandTemplate } from "../../types/CommandTemplate.js";
+import type { CommandTemplate, DiscordCommandTemplate } from "../../templates/CommandTemplate.js";
 import { InteractionHandler } from "../BaseHandler.js";
-import { transformToDiscordCommand } from "../../types/CommandTemplate.js";
+import { transformToDiscordCommand } from "../../templates/CommandTemplate.js";
 
 type ListenerArguments = Parameters<CommandTemplate[ "run" ]>;
 
