@@ -5,7 +5,7 @@ const eventSubStreamOffline = createEventSubListener({
   name: "streamOffline",
   runOnce: false,
   async run(bot, _client, event) {
-    const serviceResponse = await bot.services.streamStatus.offline();
+    const serviceResponse = await bot.services.streamActivity.offline();
     if (serviceResponse.errored) console.error(serviceResponse.message);
 
     void twitchLog(`Broadcaster ${event.broadcasterDisplayName} is no longer streaming!.`);

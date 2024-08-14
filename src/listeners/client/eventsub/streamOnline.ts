@@ -6,7 +6,7 @@ const eventSubStreamOnline = createEventSubListener({
   name: "streamOnline",
   runOnce: false,
   async run(bot, _client, event) {
-    const serviceResponse = await bot.services.streamStatus.online(HOST_TWITCH_ID);
+    const serviceResponse = await bot.services.streamActivity.online(HOST_TWITCH_ID);
     if (serviceResponse.errored) console.error(serviceResponse.message);
 
     void twitchLog(`Broadcaster ${event.broadcasterDisplayName} is now streaming! The stream is of type ${event.streamType}.`);
