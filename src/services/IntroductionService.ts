@@ -8,15 +8,8 @@ import type { ServiceResponse } from "../utilities/ServiceResponse.js";
 import { INTRODUCTION_CHANNEL_ID } from "../config/constants.js";
 import { isNullish } from "../utilities/nullishAssertion.js";
 import { ServiceData, ServiceError } from "../utilities/ServiceResponse.js";
-
-interface IntroductionDetails {
-  readonly name: string;
-  readonly iconURL: string;
-  readonly aboutUser: string;
-  readonly userAge: string;
-  readonly userPronouns: string;
-  readonly userHobbies: string;
-}
+import { IntroductionDetails } from "../types/IntroductionDetails.js";
+import { ERRORS } from "../config/messages.js";
 
 function generateIntroductionEmbed({
   name, iconURL, aboutUser, userAge, userPronouns, userHobbies

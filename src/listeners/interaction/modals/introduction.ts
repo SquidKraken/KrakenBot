@@ -3,8 +3,8 @@ import {
   ActionRowBuilder, ModalBuilder, TextInputBuilder, TextInputStyle
 } from "discord.js";
 
-import { ROLES_CHANNEL_ID } from "../../../constants.js";
 import { createModal } from "../../../templates/ModalTemplate.js";
+import { REPLY_CONTENT } from "../../../config/messages.js";
 
 const aboutInput = new TextInputBuilder()
   .setCustomId("aboutInput")
@@ -58,7 +58,7 @@ const introductionModalData = createModal({
     if (introductionResponse.errored) return context.error(introductionResponse.message);
 
     return context.reply({
-      content: `Thank you for letting us know about yourself! Grab yourself some roles from <#${ROLES_CHANNEL_ID}> to get access to the rest of the server.`,
+      content: REPLY_CONTENT.INTRO_RECEIVED,
       ephemeral: true
     });
   }

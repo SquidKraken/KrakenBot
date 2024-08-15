@@ -17,14 +17,14 @@ export class GatekeepService {
 
   // eslint-disable-next-line class-methods-use-this
   async allowAccessToRoles(member: APIGuildMember): Promise<ServiceResponse<APIGuildMember>> {
-    if (Array.isArray(member.roles)) return new ServiceError("An unexpected error occured. Please try again.");
+    if (Array.isArray(member.roles)) return new ServiceError(ERRORS.UNEXPECTED);
 
     try {
       const guildMember = await member.roles.add(ACCESS_ROLE_ID);
 
       return new ServiceData(guildMember);
     } catch {
-      return new ServiceError("I was unable to give you the required roles!");
+      return new ServiceError(ERRORS.CANT_ASSIGN_ROLES);
     }
   }
 }

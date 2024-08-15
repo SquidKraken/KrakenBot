@@ -1,10 +1,11 @@
+import { COMMAND_DESCRIPTIONS } from "../../../config/messages.js";
 import { TWITTER_LINK } from "../../../config/constants.js";
 import { createCommand, PermissionFlags } from "../../../templates/CommandTemplate.js";
 import { LinkFormatType } from "../../../types/LinkFormatType.js";
 
 const discordCommand = createCommand({
   name: "twitter",
-  description: "View Squid's Twitter page link",
+  description: COMMAND_DESCRIPTIONS.TWITTER,
   allowInDMs: true,
   guildPermissions: PermissionFlags.SendMessages,
   compatibility: {
