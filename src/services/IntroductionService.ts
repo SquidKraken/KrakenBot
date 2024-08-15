@@ -43,14 +43,14 @@ export class IntroductionService {
 
   get introductionModal(): (typeof introductionModalData)["modal"] {
     const introductionModal = this.bot.interactions.modal.listeners.get("introduction")?.modal;
-    if (isNullish(introductionModal)) throw new Error("Missing Introduction modal!");
+    if (isNullish(introductionModal)) throw new Error(ERRORS.MISSING_MODAL);
 
     return introductionModal;
   }
 
   async getIntroductionChannel(): Promise<ServiceResponse<TextBasedChannel>> {
     const introductionChannel = await this.bot.clients.discord.emitter.channels.fetch(INTRODUCTION_CHANNEL_ID);
-    if (isNullish(introductionChannel) || !introductionChannel.isTextBased()) return new ServiceError("Missing Introduction channel!");
+    if (isNullish(introductionChannel) || !introductionChannel.isTextBased()) return new ServiceError(ERRORS.MISSING_INTRO_CHANNEL);
 
     return new ServiceData(introductionChannel);
   }
@@ -71,7 +71,7 @@ export class IntroductionService {
 
       return new ServiceData(sentMessage);
     } catch {
-      return new ServiceError("Could not send introduction message to the introduction channel!");
+      return new ServiceError(ERRORS.CANT_SEND_INTRO);
     }
   }
 }
