@@ -16,7 +16,7 @@ import {
   ANNOUNCEMENT_CHANNEL_ID, BOX_ART_URL_HEIGHT, BOX_ART_URL_WIDTH, DISCORD_INVITE,
   SELF_PROMO_INTERVAL_MILLISECONDS, TWITCH_COLOR, TWITCH_ICON_FILENAME, TWITTER_LINK, YOUTUBE_LINK
 } from "../constants.js";
-import { randomizeArray } from "../utilities/randomizeArray.js";
+import { shuffleArray } from "../utilities/shuffleArray.js";
 import { createLinkButtonRow } from "../utilities/createLinkButton.js";
 
 const ANNOUNCEMENT_TIME_PATTERN = /🟢 Started <t:\d+:\w>/u;
