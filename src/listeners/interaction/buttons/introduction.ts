@@ -14,7 +14,7 @@ const introductionButtonData = createButton({
   allowInDMs: false,
   button: introductionButton,
   async run(bot, context) {
-    return bot.services.introduction.requestDetailsUsing(context);
+    return bot.services.introduction.requestIntroUsing(context);
   }
 });
 

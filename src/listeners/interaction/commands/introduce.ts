@@ -12,7 +12,7 @@ const introduceCommand = createCommand({
   },
   options: [],
   async run(bot, context) {
-    return bot.services.introduction.requestDetailsUsing(context);
+    return bot.services.introduction.requestIntroUsing(context);
   }
 });
 

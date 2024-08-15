@@ -32,8 +32,12 @@ class PromoInterval {
   start(hostID: string): void {
     if (!isNullish(this.interval)) return;
 
-    this.interval = setInterval(async() => {
-      const promoMessageToSend = PROMO_MESSAGES[this.calls % PROMO_MESSAGES.length]!;
+    const shuffledPromoMessages = shuffleArray(PROMO_MESSAGES);
+
+    this.interval = setInterval(async () => {
+      // The modulo operation will always return a number between 0 and the length of the array
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      const promoMessageToSend = shuffledPromoMessages[this.calls % shuffledPromoMessages.length]!;
       this.calls += 1;
 
       await this.client.say(hostID, promoMessageToSend);
@@ -100,7 +104,7 @@ class AnnouncementManager {
   async post(
     streamerData: HelixUser,
     streamData: HelixStream,
-    gameData: HelixGame | null
+    gameData?: HelixGame
   ): Promise<ServiceResponse<Message>> {
     const serviceResponse = await this.getChannel();
     if (serviceResponse.errored) return serviceResponse;
@@ -135,7 +139,7 @@ class AnnouncementManager {
   }
 }
 
-export class StreamStatusService {
+export class StreamActivityService {
   readonly bot: KrakenBot;
   readonly announcement: AnnouncementManager;
   readonly interval: PromoInterval;
@@ -158,7 +162,9 @@ export class StreamStatusService {
     const gameData = await hostStream.getGame();
     this.interval.start(hostID);
 
-    return this.announcement.post(hostUser, hostStream, gameData);
+    return isNullish(gameData)
+      ? this.announcement.post(hostUser, hostStream)
+      : this.announcement.post(hostUser, hostStream, gameData);
   }
 
   async offline(): Promise<ServiceResponse<Message>> {

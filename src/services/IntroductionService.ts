@@ -55,11 +55,11 @@ export class IntroductionService {
     return new ServiceData(introductionChannel);
   }
 
-  async requestDetailsUsing(context: DiscordNonModalContext<false>): Promise<void> {
+  async requestIntroUsing(context: DiscordNonModalContext<false>): Promise<void> {
     return context.showModal(this.introductionModal);
   }
 
-  async postDetails(introductionDetails: IntroductionDetails): Promise<ServiceResponse<Message>> {
+  async postIntro(introductionDetails: IntroductionDetails): Promise<ServiceResponse<Message>> {
     const serviceResponse = await this.getIntroductionChannel();
     if (serviceResponse.errored) return serviceResponse;
 

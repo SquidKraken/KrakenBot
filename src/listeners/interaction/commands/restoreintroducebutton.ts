@@ -29,8 +29,8 @@ const restoreIntroduceButtonCommand = createCommand({
         content: MESSAGE_CONTENT.INTRODUCE_INSTRUCTION,
         components: [ buttonRow ]
       });
-    } catch (sendError: unknown) {
-      console.error(sendError);
+    } catch (error: unknown) {
+      console.error(error);
 
       return context.error(ERRORS.FAILED_INTRO_BUTTON_SETUP);
     }

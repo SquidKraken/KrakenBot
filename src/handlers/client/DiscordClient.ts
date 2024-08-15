@@ -7,6 +7,7 @@ import {
 } from "../../config/api.js";
 
 export class DiscordClient extends ClientHandler<"discord"> {
+  // @ts-expect-error Unusual type incompatibility with BaseEmitter
   override readonly emitter: DJSClient;
   readonly applicationID: string;
   readonly rest: REST;
@@ -21,10 +22,8 @@ export class DiscordClient extends ClientHandler<"discord"> {
 
   registerListeners(): void {
     for (const [ eventName, eventListener ] of this.listeners.entries()) {
-      // @ts-expect-error EventEmitter callback is registered properly
       if (eventListener.runOnce) this.emitter.once(eventName, eventListener.run.bind(eventListener));
 
-      // @ts-expect-error EventEmitter callback is registered properly
       else this.emitter.on(eventName, eventListener.run.bind(eventListener, this.bot));
     }
   }

@@ -66,6 +66,8 @@ abstract class BaseHandler<ListenerName extends ListenerNames> {
     await Promise.all(
       listenerFilenames
         .map(async listenerFilename => {
+          // The split method will always return an array with at least one element
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           const listenerName = listenerFilename.split(".")[0]!;
           const listenerPath = path.join(this.#listenerDirectory, listenerFilename);
 
