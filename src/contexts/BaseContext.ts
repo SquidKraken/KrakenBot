@@ -1,13 +1,14 @@
 import type {
   InteractionReplyOptions, InteractionResponse, Message, BaseMessageOptions, MessagePayload
 } from "discord.js";
+import { LinkFormatType } from "../types/LinkFormatType";
 
 export type RequiredReplyOptions = InteractionReplyOptions & { content: string; };
 export type RequiredMessageOptions = BaseMessageOptions & { content: string; };
 export type SayReturnType = [ string ] | [ string, string ];
 
 export abstract class BaseFormatter {
-  abstract hyperlink(text: string, url: `https://${string}`, nameFormat: "bracket" | "dictionary"): string;
+  abstract hyperlink(text: string, url: `https://${string}`, nameFormat: LinkFormatType): string;
 }
 
 export abstract class BaseContext {

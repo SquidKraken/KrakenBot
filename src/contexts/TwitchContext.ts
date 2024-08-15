@@ -3,10 +3,11 @@ import type { ChatUserstate, Client as TMIClient } from "tmi.js";
 import type { RequiredMessageOptions, RequiredReplyOptions, SayReturnType } from "./BaseContext.js";
 import { BaseContext, BaseFormatter } from "./BaseContext.js";
 import { isNullish } from "../utilities/nullishAssertion.js";
+import { LinkFormatType } from "../types/LinkFormatType.js";
 
 class TwitchFormatter extends BaseFormatter {
-  hyperlink(text: string, url: `https://${string}`, nameFormat: "bracket" | "dictionary"): string {
-    return nameFormat === "bracket"
+  hyperlink(text: string, url: `https://${string}`, nameFormat: LinkFormatType): string {
+    return nameFormat === LinkFormatType.Bracket
       ? `${text} (${url})`
       : `${text}: ${url}`;
   }
