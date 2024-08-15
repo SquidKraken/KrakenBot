@@ -1,14 +1,14 @@
 {
   "name": "kraken-bot",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "A Discord bot for Squid's server",
   "private": true,
   "author": "spuggle",
   "license": "Apache-2.0",
-  "homepage": "https://github.com/spuggle/kraken-bot#readme",
+  "homepage": "https://github.com/SquidKraken/KrakenBot#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/spuggle/kraken-bot.git"
+    "url": "git+https://github.com/SquidKraken/KrakenBot.git"
   },
   "keywords": [
     "discord",
@@ -16,7 +16,7 @@
     "discord.js"
   ],
   "bugs": {
-    "url": "https://github.com/spuggle/kraken-bot/issues"
+    "url": "https://github.com/SquidKraken/KrakenBot/issues"
   },
   "main": "dist/index.js",
   "type": "module",
@@ -25,7 +25,6 @@
     "build:watch": "tsc --pretty --sourceMap --watch",
     "lint": "oxlint -c oxlintrc.json src/",
     "lint:commit": "git log -1 --pretty=format:'%B' | commitlint",
-    "postinstall": "tsc",
     "start": "node dist/index.js",
     "test": "echo 'Error: no test specified' && exit 1"
   },
@@ -43,21 +42,14 @@
     "unique-random-array": "4.0.0"
   },
   "devDependencies": {
-    "@commitlint/cli": "19.4.0",
     "@twurple/eventsub-base": "^7.1.0",
     "@types/express": "4.17.21",
     "@types/node": "22.3.0",
     "@types/tmi.js": "1.8.6",
     "globals": "^15.9.0",
-    "husky": "9.1.4",
     "oxlint": "^0.7.1",
     "tslib": "2.6.3",
     "type-fest": "4.24.0",
     "typescript": "5.5.4"
-  },
-  "commitlint": {
-    "extends": [
-      "./.github/configs/commitlint.json"
-    ]
   }
 }
