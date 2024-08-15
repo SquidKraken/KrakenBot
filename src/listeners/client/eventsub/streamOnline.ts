@@ -3,8 +3,9 @@ import { createEventSubListener } from "../../../templates/EventSubTemplate.js";
 import { twitchLog } from "../../../utilities/logger.js";
 
 const eventSubStreamOnline = createEventSubListener({
-  name: "streamOnline",
+  event: "onStreamOnline",
   runOnce: false,
+  target: [ HOST_TWITCH_ID ],
   async run(bot, _client, event) {
     const serviceResponse = await bot.services.streamActivity.online(HOST_TWITCH_ID);
     if (serviceResponse.errored) console.error(serviceResponse.message);
