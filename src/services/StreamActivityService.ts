@@ -154,10 +154,10 @@ export class StreamActivityService {
 
   async online(hostID: string): Promise<ServiceResponse<Message>> {
     const hostUser = await this.twitch.api.users.getUserById(hostID);
-    if (isNullish(hostUser)) return new ServiceError("I could not fetch stream host data!");
+    if (isNullish(hostUser)) return new ServiceError(ERRORS.FAILED_STREAMER_DATA_FETCH);
 
     const hostStream = await this.twitch.api.streams.getStreamByUserId(hostID);
-    if (isNullish(hostStream)) return new ServiceError("I could not fetch the stream's data!");
+    if (isNullish(hostStream)) return new ServiceError(ERRORS.FAILED_STREAM_DATA_FETCH);
 
     const gameData = await hostStream.getGame();
     this.interval.start(hostID);
