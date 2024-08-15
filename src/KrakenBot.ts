@@ -1,4 +1,4 @@
-import { DISCORD_BOT_TOKEN } from "./config.js";
+import { DISCORD_BOT_TOKEN } from "./config/api.js";
 import { DiscordClient } from "./handlers/client/DiscordClient.js";
 import { TwitchClient } from "./handlers/client/TwitchClient.js";
 import { ButtonHandler } from "./handlers/interaction/ButtonHandler.js";
@@ -6,7 +6,7 @@ import { CommandHandler } from "./handlers/interaction/CommandHandler.js";
 import { ModalHandler } from "./handlers/interaction/ModalHandler.js";
 import { IntroductionService } from "./services/IntroductionService.js";
 import { GatekeepService } from "./services/GatekeepService.js";
-import { StreamStatusService } from "./services/StreamStatusService.js";
+import { StreamActivityService } from "./services/StreamActivityService.js";
 
 class BotClients {
   readonly discord: DiscordClient;
@@ -46,12 +46,12 @@ class BotInteractions {
 }
 
 class BotServices {
-  readonly streamStatus: StreamStatusService;
+  readonly streamActivity: StreamActivityService;
   readonly gatekeep: GatekeepService;
   readonly introduction: IntroductionService;
 
   constructor(bot: KrakenBot) {
-    this.streamStatus = new StreamStatusService(bot);
+    this.streamActivity = new StreamActivityService(bot);
     this.gatekeep = new GatekeepService(bot);
     this.introduction = new IntroductionService(bot);
   }

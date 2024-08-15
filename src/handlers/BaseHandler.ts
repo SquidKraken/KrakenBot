@@ -3,12 +3,12 @@ import path from "node:path";
 import { readdir } from "node:fs/promises";
 
 import type { KrakenBot } from "../KrakenBot.js";
-import type { ButtonTemplate } from "../types/ButtonTemplate.js";
-import type { CommandTemplate } from "../types/CommandTemplate.js";
-import type { DiscordTemplate } from "../types/DiscordTemplate.js";
-import type { ModalTemplate } from "../types/ModalTemplate.js";
-import type { TwitchTemplate } from "../types/TwitchTemplate.js";
-import type { EventSubTemplate } from "../types/EventSubTemplate.js";
+import type { ButtonTemplate } from "../templates/ButtonTemplate.js";
+import type { CommandTemplate } from "../templates/CommandTemplate.js";
+import type { DiscordTemplate } from "../templates/DiscordTemplate.js";
+import type { ModalTemplate } from "../templates/ModalTemplate.js";
+import type { TwitchTemplate } from "../templates/TwitchTemplate.js";
+import type { EventSubTemplate } from "../templates/EventSubTemplate.js";
 
 interface ClientListenerTemplates {
   discord: DiscordTemplate;
@@ -66,6 +66,8 @@ abstract class BaseHandler<ListenerName extends ListenerNames> {
     await Promise.all(
       listenerFilenames
         .map(async listenerFilename => {
+          // The split method will always return an array with at least one element
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           const listenerName = listenerFilename.split(".")[0]!;
           const listenerPath = path.join(this.#listenerDirectory, listenerFilename);
 

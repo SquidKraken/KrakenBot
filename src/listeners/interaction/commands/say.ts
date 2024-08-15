@@ -1,9 +1,10 @@
-import { CommandOptionType, createCommand, PermissionFlags } from "../../../types/CommandTemplate.js";
+import { COMMAND_DESCRIPTIONS, ERRORS } from "../../../config/messages.js";
+import { CommandOptionType, createCommand, PermissionFlags } from "../../../templates/CommandTemplate.js";
 import { isNullish } from "../../../utilities/nullishAssertion.js";
 
 const sayCommand = createCommand({
   name: "say",
-  description: "Say something!",
+  description: COMMAND_DESCRIPTIONS.SAY,
   allowInDMs: true,
   guildPermissions: PermissionFlags.SendMessages,
   compatibility: {
@@ -20,7 +21,8 @@ const sayCommand = createCommand({
   ] as const,
   async run(_bot, context) {
     const textToSay = context.interaction.options.getString("text");
-    if (isNullish(textToSay)) return context.error("You have not provided anything for me to say!");
+    if (isNullish(textToSay)) return context.error(ERRORS
+      .MISSING_SAY_ARGUMENTS);
 
     return context.reply(textToSay);
   }

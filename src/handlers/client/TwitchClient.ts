@@ -3,28 +3,22 @@ import EventEmitter from "node:events";
 import type { Router } from "express";
 import type { Events, Options as TMIOptions } from "tmi.js";
 import { Client as TMIClient } from "tmi.js";
-import { ClientCredentialsAuthProvider } from "@twurple/auth";
 import { ApiClient } from "@twurple/api";
-import { EventSubMiddleware } from "@twurple/eventsub";
+import { EventSubMiddleware } from "@twurple/eventsub-http";
 
-import type { KrakenBot } from "../../KrakenBot.js";
 import type { BaseEventEmitter } from "../BaseHandler.js";
-import type { EventSubEventMethods } from "../../types/EventSubTemplate.js";
+import type { KrakenBot } from "../../KrakenBot.js";
 import { ClientHandler } from "../BaseHandler.js";
 import { isNullish } from "../../utilities/nullishAssertion.js";
-import { capitalize } from "../../utilities/capitalize.js";
 import {
-  HOST_TWITCH_ID, TWITCH_AUTH_PROVIDER_CONFIG, TWITCH_BOT_CONFIG, TWITCH_EVENTSUB_CONFIG, TWITCH_LOGGER_CONFIG
-} from "../../config.js";
+  TWITCH_AUTH_PROVIDER_CONFIG, TWITCH_BOT_CONFIG, TWITCH_EVENTSUB_CONFIG, TWITCH_LOGGER_CONFIG
+} from "../../config/api.js";
+import { ERRORS } from "../../config/messages.js";
+import { AppTokenAuthProvider } from "@twurple/auth";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-type ListenerArguments<T> = [T] extends [(...listenerArguments: infer U)=> any] ? U : [T] extends [never] ? [] : [T];
-type ListenerType = (...arguments_: unknown[])=> void;
-type MiddlewareBypass = EventSubMiddleware & Record<string, undefined>;
-
-function raidEventReplacer(wholeMatch: string, endingWord: unknown): string {
-  return typeof endingWord === "string" ? `Events${endingWord}` : wholeMatch;
-}
+type ListenerArguments<T> = [ T ] extends [ (...listenerArguments: infer U) => any ] ? U : [ T ] extends [ never ] ? [] : [ T ];
+type ListenerType = (...arguments_: unknown[]) => void;
 
 class TwitchEmitter extends EventEmitter implements BaseEventEmitter {
   readonly client: TMIClient;
@@ -36,7 +30,7 @@ class TwitchEmitter extends EventEmitter implements BaseEventEmitter {
 
   override emit<EventName extends keyof Events>(
     eventName: EventName,
-    ..._arguments: ListenerArguments<Events[EventName]>
+    ..._arguments: ListenerArguments<Events[ EventName ]>
   ): boolean {
     this.client.emit(eventName, ..._arguments);
 
@@ -78,16 +72,15 @@ class EventSubClient extends ClientHandler<"eventsub"> {
   }
 
   async registerListeners(): Promise<void> {
-    for await (const [ eventName, eventListener ] of this.listeners.entries()) {
-      const eventSubscribeMethodName = eventName.endsWith("To") || eventName.endsWith("From")
-        ? `subscribeTo${capitalize(eventName
-          .replace(/(From|To)$/u, raidEventReplacer))}`
-        : `subscribeTo${capitalize(eventName)}Events`;
+    for await (const [ _, eventListener ] of this.listeners.entries()) {
+      const eventSubscribeMethodName = eventListener.event;
 
-      if (isNullish((this.middleware as MiddlewareBypass)[eventSubscribeMethodName as keyof EventSubEventMethods])) throw new Error("Invalid event subscribe method name!");
+      if (isNullish(this.middleware[eventSubscribeMethodName])) throw new Error(ERRORS.INVALID_SUBSCRIBE_METHOD);
 
-      await (this.middleware as MiddlewareBypass)[eventSubscribeMethodName as keyof EventSubEventMethods](
-        HOST_TWITCH_ID,
+      // @ts-expect-error EventSubMiddleware callback receives sufficient parameters
+      await this.middleware[eventSubscribeMethodName](
+        ...eventListener.target,
+        // @ts-expect-error This context of the run method is valid
         eventListener.run.bind(eventListener, this.bot, this.bot.clients.twitch.chat.emitter.client)
       );
     }
@@ -115,14 +108,14 @@ class TwitchChatClient extends ClientHandler<"twitch"> {
 
 export class TwitchClient {
   readonly bot: KrakenBot;
-  readonly authProvider: ClientCredentialsAuthProvider;
+  readonly authProvider: AppTokenAuthProvider;
   readonly api: ApiClient;
   readonly chat: TwitchChatClient;
   readonly eventsub: EventSubClient;
 
   constructor(bot: KrakenBot) {
     this.bot = bot;
-    this.authProvider = new ClientCredentialsAuthProvider(
+    this.authProvider = new AppTokenAuthProvider(
       TWITCH_AUTH_PROVIDER_CONFIG.clientID,
       TWITCH_AUTH_PROVIDER_CONFIG.clientSecret
     );

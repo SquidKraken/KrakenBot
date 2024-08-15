@@ -1,9 +1,0 @@
-{
-  "extends": [
-    "./base.json",
-    "./plugins/unicorn.json",
-    "./plugins/node.json",
-    "./plugins/ts.json",
-    "./plugins/import.json"
-  ]
-}

@@ -1,6 +1,6 @@
 import "dotenv/config";
 import { KrakenBot } from "./KrakenBot.js";
-import { PORT } from "./config.js";
+import { PORT } from "./config/api.js";
 import { krakenApp } from "./server.js";
 
 const bot = new KrakenBot();

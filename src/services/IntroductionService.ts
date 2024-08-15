@@ -5,18 +5,11 @@ import type { DiscordNonModalContext } from "../contexts/DiscordContext.js";
 import type introductionModalData from "../listeners/interaction/modals/introduction.js";
 import type { KrakenBot } from "../KrakenBot.js";
 import type { ServiceResponse } from "../utilities/ServiceResponse.js";
-import { INTRODUCTION_CHANNEL_ID } from "../constants.js";
+import { INTRODUCTION_CHANNEL_ID } from "../config/constants.js";
 import { isNullish } from "../utilities/nullishAssertion.js";
 import { ServiceData, ServiceError } from "../utilities/ServiceResponse.js";
-
-interface IntroductionDetails {
-  readonly name: string;
-  readonly iconURL: string;
-  readonly aboutUser: string;
-  readonly userAge: string;
-  readonly userPronouns: string;
-  readonly userHobbies: string;
-}
+import { IntroductionDetails } from "../types/IntroductionDetails.js";
+import { ERRORS } from "../config/messages.js";
 
 function generateIntroductionEmbed({
   name, iconURL, aboutUser, userAge, userPronouns, userHobbies
@@ -50,23 +43,23 @@ export class IntroductionService {
 
   get introductionModal(): (typeof introductionModalData)["modal"] {
     const introductionModal = this.bot.interactions.modal.listeners.get("introduction")?.modal;
-    if (isNullish(introductionModal)) throw new Error("Missing Introduction modal!");
+    if (isNullish(introductionModal)) throw new Error(ERRORS.MISSING_MODAL);
 
     return introductionModal;
   }
 
   async getIntroductionChannel(): Promise<ServiceResponse<TextBasedChannel>> {
     const introductionChannel = await this.bot.clients.discord.emitter.channels.fetch(INTRODUCTION_CHANNEL_ID);
-    if (isNullish(introductionChannel) || !introductionChannel.isTextBased()) return new ServiceError("Missing Introduction channel!");
+    if (isNullish(introductionChannel) || !introductionChannel.isTextBased()) return new ServiceError(ERRORS.MISSING_INTRO_CHANNEL);
 
     return new ServiceData(introductionChannel);
   }
 
-  async requestDetailsUsing(context: DiscordNonModalContext<false>): Promise<void> {
+  async requestIntroUsing(context: DiscordNonModalContext<false>): Promise<void> {
     return context.showModal(this.introductionModal);
   }
 
-  async postDetails(introductionDetails: IntroductionDetails): Promise<ServiceResponse<Message>> {
+  async postIntro(introductionDetails: IntroductionDetails): Promise<ServiceResponse<Message>> {
     const serviceResponse = await this.getIntroductionChannel();
     if (serviceResponse.errored) return serviceResponse;
 
@@ -78,7 +71,7 @@ export class IntroductionService {
 
       return new ServiceData(sentMessage);
     } catch {
-      return new ServiceError("Could not send introduction message to the introduction channel!");
+      return new ServiceError(ERRORS.CANT_SEND_INTRO);
     }
   }
 }

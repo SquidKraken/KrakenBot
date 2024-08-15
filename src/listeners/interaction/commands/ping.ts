@@ -1,8 +1,9 @@
-import { createCommand, PermissionFlags } from "../../../types/CommandTemplate.js";
+import { COMMAND_DESCRIPTIONS } from "../../../config/messages.js";
+import { createCommand, PermissionFlags } from "../../../templates/CommandTemplate.js";
 
 const pingCommand = createCommand({
   name: "ping",
-  description: "Replies with 'Pong!'",
+  description: COMMAND_DESCRIPTIONS.PING,
   allowInDMs: true,
   guildPermissions: PermissionFlags.SendMessages,
   compatibility: {

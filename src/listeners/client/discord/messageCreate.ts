@@ -1,4 +1,4 @@
-import { createDiscordListener } from "../../../types/DiscordTemplate.js";
+import { createDiscordListener } from "../../../templates/DiscordTemplate.js";
 import { discordLog } from "../../../utilities/logger.js";
 
 const discordMessageCreate = createDiscordListener({
