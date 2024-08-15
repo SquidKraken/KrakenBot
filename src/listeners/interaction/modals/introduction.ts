@@ -44,18 +44,18 @@ const introductionModalData = createModal({
     const { interaction: { user, fields, member } } = context;
     const introductionDetails = {
       name: user.username,
-      iconURL: user.avatarURL()!,
+      iconURL: user.avatarURL() ?? user.defaultAvatarURL,
       aboutUser: fields.getTextInputValue("aboutInput"),
       userAge: fields.getTextInputValue("ageInput"),
       userPronouns: fields.getTextInputValue("pronounsInput"),
       userHobbies: fields.getTextInputValue("hobbiesInput")
     };
 
+    const introductionResponse = await bot.services.introduction.postIntro(introductionDetails);
+    if (introductionResponse.errored) return context.error(introductionResponse.message);
+
     const gatekeepResponse = await bot.services.gatekeep.allowAccessToRoles(member);
     if (gatekeepResponse.errored) return context.error(gatekeepResponse.message);
-
-    const introductionResponse = await bot.services.introduction.postDetails(introductionDetails);
-    if (introductionResponse.errored) return context.error(introductionResponse.message);
 
     return context.reply({
       content: REPLY_CONTENT.INTRO_RECEIVED,
