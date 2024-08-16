@@ -1,8 +1,9 @@
 export interface IntroductionDetails {
   readonly name: string;
   readonly iconURL: string;
-  readonly aboutUser: string;
-  readonly userAge: string;
+  readonly userName: string;
+  readonly userAge: number;
   readonly userPronouns: string;
+  readonly aboutUser: string;
   readonly userHobbies: string;
 }

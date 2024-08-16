@@ -12,19 +12,24 @@ import { IntroductionDetails } from "../types/IntroductionDetails.js";
 import { ERRORS } from "../config/messages.js";
 
 function generateIntroductionEmbed({
-  name, iconURL, aboutUser, userAge, userPronouns, userHobbies
+  name, iconURL, userName, userAge, userPronouns, aboutUser, userHobbies
 }: IntroductionDetails): EmbedBuilder {
+  const birthDate = userAge === -1 ? "" : `Born <t:${Date.parse(`${new Date().getFullYear() - userAge + 1}`) / 1000}:R>\u2006\n\u200B`;
+
   return new EmbedBuilder()
     .setAuthor({
       name,
       iconURL
     })
-    .setDescription([
-      `🙋 **About Me:** ${aboutUser}`,
-      `🧙 **My Age:** ${userAge}`,
-      `❔ **My Pronouns**: ${userPronouns}`,
-      `⚽ **My Hobbies:** ${userHobbies}`
-    ].join("\n"));
+    .setDescription("## 👋 My Introduction")
+    .addFields([
+      { name: "👤 My Name", value: `${userName}\u2006\n\u200B`, inline: true },
+      ...(userAge === -1 ? [] : [ { name: "🧙 My Age", value: birthDate, inline: true } ]),
+      { name: "❔ My Pronouns", value: `${userPronouns}\u2006\n\u200B`, inline: true },
+      { name: "🙋 About Me", value: `${aboutUser}\n\u200B` },
+      { name: "⚽ My Hobbies", value: userHobbies }
+    ])
+    .setColor("#6a1f36");
 }
 
 /**

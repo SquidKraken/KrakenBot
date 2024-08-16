@@ -14,6 +14,8 @@ export const YOUTUBE_LINK = `https://www.youtube.com/c/${process.env.CREATOR_USE
 export const TWITCH_LINK = `https://www.twitch.tv/${process.env.HOST_USERNAME}` as const;
 
 export const ACCESS_ROLE_ID = "742869132990742688";
+export const GROWN_UP_ROLE_ID = "978640590134726716";
+export const CHILD_ROLE_ID = "904391999153639444";
 export const ROLES_CHANNEL_ID = "743079881398812693";
 export const ANNOUNCEMENT_CHANNEL_ID = "743475845930287237";
 export const INTRODUCTION_CHANNEL_ID = "742871181929218161";
