@@ -26,6 +26,7 @@
     "lint": "oxlint -c oxlintrc.json src/",
     "lint:commit": "git log -1 --pretty=format:'%B' | commitlint",
     "start": "node dist/index.js",
+    "start:server": "pm2 start dist/index.js --name kraken",
     "test": "echo 'Error: no test specified' && exit 1"
   },
   "dependencies": {

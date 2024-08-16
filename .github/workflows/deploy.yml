@@ -1,0 +1,38 @@
+name: Deploy
+on:
+  push:
+    branches:
+      - main
+  
+jobs:
+  deploy_bot:
+    name: Deploy Bot
+    runs-on: ubuntu-latest
+    environment: production
+    
+    steps:
+    - name: Install SSH Keys
+      run: |
+        install -m 600 -D /dev/null ~/.ssh/id_rsa
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+        ssh-keyscan -H ${{ secrets.SSH_HOST }} > ~/.ssh/known_hosts
+
+    - name: Connect to Server
+      run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}
+      
+    - name: Pull Changes
+      run: |
+        cd ${{ secrets.WORK_DIR }}
+        git checkout ${{ secrets.TARGET_BRANCH }}
+        git pull
+
+    - name: Prepare Project
+      run: |
+        pnpm install
+        pnpm run build
+
+    - name: Restart Bot Process
+      run: pm2 restart ${{ secrets.PROCESS_NAME }}
+
+    - name: Cleanup
+      run: exit && rm -rf ~/.ssh
